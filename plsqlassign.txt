@@ -1,0 +1,242 @@
+PL*SQL
+Exercise 1
+1. Write a program that computes the perimeter and the area of a rectangle. Define
+your own values for the length and width. (Assuming that L and W are the length
+and width of the rectangle, Perimeter = 2*(L+W) and Area = L*W. Display the
+output on the screen using dbms_output.put_line.
+
+  1  create or replace procedure area_peri as
+  2  l number:=&l;
+  3  w number:=&w;
+  4  area number;
+  5  peri number;
+  6  begin
+  7  area:=l*w;
+  8  peri:=2*(l+w);
+  9  DBMS_OUTPUT.PUT_LINE('area is '||area || 'perimeter' || peri);
+ 10* end;
+ 11  /
+Enter value for l: 5
+old   2: l number:=&l;
+new   2: l number:=5;
+Enter value for w: 6
+old   3: w number:=&w;
+new   3: w number:=6;
+
+Procedure created.
+
+SQL> execute area_peri;
+area is 30perimeter22
+
+PL/SQL procedure successfully completed.
+
+2. Write a program that declares an integer variable called num, assigns a value to it,
+and computes and inserts into the tempp table the value of the variable itself, its
+square, and its cube.
+
+SQL> create table cube_s(
+  2  num number,
+  3  square number,
+  4  cube number);
+
+Table created.
+
+  1  create or replace procedure cubes
+  2  as
+  3  num number:=&n;
+  4  cube number;
+  5  square number;
+  6  begin
+  7  square := num*num;
+  8  cube:= num*num*num;
+  9  DBMS_OUTPUT.PUT_LINE('square: '|| square);
+ 10  DBMS_OUTPUT.PUT_LINE('cube: '|| cube);
+ 11  insert into cube_s values(num,square,cube);
+ 12* end;
+SQL> /
+Enter value for n: 6
+old   3: num number:=&n;
+new   3: num number:=6;
+
+Procedure created.
+
+SQL> execute cubes
+square: 36
+cube: 216
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from cube_s;
+
+       NUM     SQUARE       CUBE
+---------- ---------- ----------
+         6         36        216
+
+3. Convert a temperature in Fahrenheit (F) to its equivalent in Celsius (C) and vice
+versa. The required formulae are:-
+C= (F-32)*5/9
+F= 9/5*C + 32
+Display the output on the screen using dbms_output.put_line. Data has to be
+input by the user.
+  1  create or replace procedure temp as
+  2  ch number:=&ch;
+  3  f number;
+  4  c number;
+  5  begin
+  6  if ch=1 then
+  7  f:=&f;
+  8  c:=(f-32)*5/9;
+  9  DBMS_OUTPUT.PUT_LINE('celcius is' || c);
+ 10  elsif ch=2 then
+ 11  c:=&c;
+ 12  f:=9/5*c+32;
+ 13  DBMS_OUTPUT.PUT_LINE('fahernheit is' || f);
+ 14  else
+ 15  DBMS_OUTPUT.PUT_LINE('invalid choice');
+ 16  end if;
+ 17* end;
+SQL> /
+Enter value for ch: 1
+old   2: ch number:=&ch;
+new   2: ch number:=1;
+Enter value for f: 75
+old   7: f:=&f;
+new   7: f:=75;
+Enter value for c: 86
+old  11: c:=&c;
+new  11: c:=86;
+
+Procedure created.
+
+SQL> execute temp
+celcius is23.88888888888888888888888888888888888889
+
+PL/SQL procedure successfully completed.
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create or replace procedure temp as
+  2  ch number:=&ch;
+  3  f number;
+  4  c number;
+  5  begin
+  6  if ch=1 then
+  7  f:=&f;
+  8  c:=(f-32)*5/9;
+  9  DBMS_OUTPUT.PUT_LINE('celcius is' || c);
+ 10  elsif ch=2 then
+ 11  c:=&c;
+ 12  f:=9/5*c+32;
+ 13  DBMS_OUTPUT.PUT_LINE('fahernheit is' || f);
+ 14  else
+ 15  DBMS_OUTPUT.PUT_LINE('invalid choice');
+ 16  end if;
+ 17* end;
+SQL> /
+Enter value for ch: 2
+old   2: ch number:=&ch;
+new   2: ch number:=2;
+Enter value for f: 45
+old   7: f:=&f;
+new   7: f:=45;
+Enter value for c: 75
+old  11: c:=&c;
+new  11: c:=75;
+
+Procedure created.
+
+SQL> execute temp
+fahernheit is167
+
+PL/SQL procedure successfully completed.
+
+4. Convert a number of inches into yards, feet, and inches. For example, 124 inches
+equals 3 yards, 1 foot, and 4 inches. Display the output on the screen using
+dbms_output.put_line. Data has to be input by the user.
+
+  1  create or replace procedure inch
+  2  as
+  3  inch number:=&i;
+  4  yard number;
+  5  feet number;
+  6  inches number;
+  7  begin
+  8  feet:=floor(inch/12);
+  9  yard:=floor(feet/3);
+ 10  feet:=floor(feet mod 3);
+ 11  inches :=inch mod 12;
+ 12  DBMS_OUTPUT.PUT_LINE(yard || 'yards ' ||feet || 'feets '||inches || 'inches');
+ 13* end;
+SQL> /
+Enter value for i: 124
+old   3: inch number:=&i;
+new   3: inch number:=124;
+
+Procedure created.
+
+SQL> execute inch;
+3yards 1feets 4inches
+
+PL/SQL procedure successfully completed.
+5. Write a program that enables a user to input an integer. The program should then
+state whether the integer is evenly divisible by 5. (Use decode instead of IF
+statement where required). Display the output on the screen using
+dbms_output.put_line. Data has to be input by the user.
+
+  1  create or replace procedure divi
+  2  as
+  3  num number:=&n;
+  4  begin
+  5  if (num mod 5)=0 then
+  6  DBMS_OUTPUT.PUT_LINE(num || '  is divisible');
+  7  else
+  8  DBMS_OUTPUT.PUT_LINE(num||' is not divisible');
+  9  end if;
+ 10* end;
+SQL> /
+Enter value for n: 50
+old   3: num number:=&n;
+new   3: num number:=50;
+
+Procedure created.
+
+SQL> execute divi;
+50  is divisible
+
+PL/SQL procedure successfully completed.
+
+6. Your block should read in two real numbers and tell whether the product of the
+two numbers is equal to or greater than 100. Display the output on the screen
+using dbms_output.put_line. (Use decode instead of IF statement where
+required). Data has to be input by the user.
+
+  1  create or replace procedure prod_1
+  2  as
+  3  num1 number:= &n;
+  4  num2 number:=&nn;
+  5  prod number;
+  6  begin
+  7  prod:=num1*num2;
+  8  if prod > 100 then
+  9  DBMS_OUTPUT.PUT_LINE('product is greater than 100');
+ 10  elsif prod=100 then
+ 11  DBMS_OUTPUT.PUT_LINE('equal to 100');
+ 12  else
+ 13  DBMS_OUTPUT.PUT_LINE('product is less than 100');
+ 14  end if;
+ 15* end;
+SQL> /
+Enter value for n: 5
+old   3: num1 number:= &n;
+new   3: num1 number:= 5;
+Enter value for nn: 10
+old   4: num2 number:=&nn;
+new   4: num2 number:=10;
+
+Procedure created.
+
+SQL> execute prod_1;
+product is less than 100
+
+PL/SQL procedure successfully completed.
