@@ -1,0 +1,267 @@
+CASSANDRA ASS 1
+
+1. create a customer table to store following columns, customer id as primary key
+customer id, name, mobile set<int>,email tuple(text,text),purchaseveh map<text,int>,hoobies list<text>
+
+create table cust_1(
+             ... cid int primary key,
+             ... cname varchar,
+             ... mobile set<int>,
+             ... email tuple<text,text>,
+             ... purchaseveh map<text,int>,
+             ... hoobies list<text>);
+
+cqlsh:iacsd0923> desc cust_1;
+
+CREATE TABLE iacsd0923.cust_1 (
+    cid int PRIMARY KEY,
+    cname text,
+    email frozen<tuple<text, text>>,
+    hoobies list<text>,
+    mobile set<int>,
+    purchaseveh map<text, int>
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'chunk_length_in_kb': '64', 'class': 'org.apache.cassandra.io.compress.LZ4Compressor'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 0
+    AND gc_grace_seconds = 864000
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+
+
+
+
+2]  insert 5 records with customer id 11,12,13,14,15
+
+
+cqlsh:iacsd0923> insert into cust_1(cid,cname,email,mobile,purchaseveh,hoobies) values
+             ... (1,'vaish',('xxx@gmail.com','yyy@gmail.com'),{45465,764487},{'ford':23},['biking','hiking']);
+cqlsh:iacsd0923> select * from cust_1;
+
+ cid | cname | email                              | hoobies              | mobile          | purchaseveh
+-----+-------+------------------------------------+----------------------+-----------------+--------------
+   1 | vaish | ('xxx@gmail.com', 'yyy@gmail.com') | ['biking', 'hiking'] | {45465, 764487} | {'ford': 23}
+
+(1 rows)
+cqlsh:iacsd0923> insert into cust_1(cid,cname,email,mobile,purchaseveh,hoobies) values
+             ... (1,'vaish',('xxx@gmail.com','yyy@gmail.com'),{45465,764487},{'ford':23},['biking','hiking']);
+cqlsh:iacsd0923> insert into cust_1(cid,cname,email,mobile,purchaseveh,hoobies) values
+             ... (2,'aish',('xax@gmail.com','yay@gmail.com'),{454899,7623287},{'bmw':01},['badminton','swim']);
+cqlsh:iacsd0923> insert into cust_1(cid,cname,email,mobile,purchaseveh,hoobies) values
+             ... (3,'arnavi',('abc@gmail.com','efg@gmail.com'),{12234,765768},{'alto':30},['read','study']);
+cqlsh:iacsd0923> insert into cust_1(cid,cname,email,mobile,purchaseveh,hoobies) values
+             ... (4,'nayana',('opq@gmail.com','pqr@gmail.com'),{4545469,323424287},{'nexon':15},['arts','draw']);
+cqlsh:iacsd0923> insert into cust_1(cid,cname,email,mobile,purchaseveh,hoobies) values
+             ... (5,'mansi',('mno@gmail.com','hij@gmail.com'),{234499,79083452},{'auto':89},['cook','swim']);
+cqlsh:iacsd0923> select * from cust_1;
+
+ cid | cname  | email                              | hoobies               | mobile               | purchaseveh
+-----+--------+------------------------------------+-----------------------+----------------------+---------------
+   5 |  mansi | ('mno@gmail.com', 'hij@gmail.com') |      ['cook', 'swim'] |   {234499, 79083452} |  {'auto': 89}
+   1 |  vaish | ('xxx@gmail.com', 'yyy@gmail.com') |  ['biking', 'hiking'] |      {45465, 764487} |  {'ford': 23}
+   2 |   aish | ('xax@gmail.com', 'yay@gmail.com') | ['badminton', 'swim'] |    {454899, 7623287} |    {'bmw': 1}
+   4 | nayana | ('opq@gmail.com', 'pqr@gmail.com') |      ['arts', 'draw'] | {4545469, 323424287} | {'nexon': 15}
+   3 | arnavi | ('abc@gmail.com', 'efg@gmail.com') |     ['read', 'study'] |      {12234, 765768} |  {'alto': 30}
+
+
+3]
+ add hoobies design, drawing for custid=12
+
+cqlsh:iacsd0923> update cust_1
+             ... set hoobies = ['design','drawing']
+             ... where cid=2;
+cqlsh:iacsd0923> select * from cust_1;
+
+ cid | cname  | email                              | hoobies               | mobile               | purchaseveh
+-----+--------+------------------------------------+-----------------------+----------------------+---------------
+   5 |  mansi | ('mno@gmail.com', 'hij@gmail.com') |      ['cook', 'swim'] |   {234499, 79083452} |  {'auto': 89}
+   1 |  vaish | ('xxx@gmail.com', 'yyy@gmail.com') |  ['biking', 'hiking'] |      {45465, 764487} |  {'ford': 23}
+   2 |   aish | ('xax@gmail.com', 'yay@gmail.com') | ['design', 'drawing'] |    {454899, 7623287} |    {'bmw': 1}
+   4 | nayana | ('opq@gmail.com', 'pqr@gmail.com') |      ['arts', 'draw'] | {4545469, 323424287} | {'nexon': 15}
+   3 | arnavi | ('abc@gmail.com', 'efg@gmail.com') |     ['read', 'study'] |      {12234, 765768} |  {'alto': 30}
+
+(5 rows)
+
+4] remove hoobies design for custid=12
+
+
+cqlsh:iacsd0923> update cust_1 set hoobies=hoobies-['design'] where cid=2;
+cqlsh:iacsd0923> select * from cust_1;
+
+ cid | cname  | email                              | hoobies              | mobile               | purchaseveh
+-----+--------+------------------------------------+----------------------+----------------------+---------------
+   5 |  mansi | ('mno@gmail.com', 'hij@gmail.com') |     ['cook', 'swim'] |   {234499, 79083452} |  {'auto': 89}
+   1 |  vaish | ('xxx@gmail.com', 'yyy@gmail.com') | ['biking', 'hiking'] |      {45465, 764487} |  {'ford': 23}
+   2 |   aish | ('xax@gmail.com', 'yay@gmail.com') |          ['drawing'] |    {454899, 7623287} |    {'bmw': 1}
+   4 | nayana | ('opq@gmail.com', 'pqr@gmail.com') |     ['arts', 'draw'] | {4545469, 323424287} | {'nexon': 15}
+   3 | arnavi | ('abc@gmail.com', 'efg@gmail.com') |    ['read', 'study'] |      {12234, 765768} |  {'alto': 30}
+
+(5 rows)
+
+5] update name of customer with id 11
+
+cqlsh:iacsd0923> update cust_1 set cname='sita' where cid=1;
+cqlsh:iacsd0923> select * from cust_1;
+
+ cid | cname  | email                              | hoobies              | mobile               | purchaseveh
+-----+--------+------------------------------------+----------------------+----------------------+---------------
+   5 |  mansi | ('mno@gmail.com', 'hij@gmail.com') |     ['cook', 'swim'] |   {234499, 79083452} |  {'auto': 89}
+   1 |   sita | ('xxx@gmail.com', 'yyy@gmail.com') | ['biking', 'hiking'] |      {45465, 764487} |  {'ford': 23}
+   2 |   aish | ('xax@gmail.com', 'yay@gmail.com') |          ['drawing'] |    {454899, 7623287} |    {'bmw': 1}
+   4 | nayana | ('opq@gmail.com', 'pqr@gmail.com') |     ['arts', 'draw'] | {4545469, 323424287} | {'nexon': 15}
+   3 | arnavi | ('abc@gmail.com', 'efg@gmail.com') |    ['read', 'study'] |      {12234, 765768} |  {'alto': 30}
+
+(5 rows)
+
+
+6]modify emails of customer 13
+cqlsh:iacsd0923> update cust_1 set email=('xxs@gmail.com','sdhajh@gmail.com') where cid=3;
+cqlsh:iacsd0923> select * from cust_1;
+
+ cid | cname  | email                                 | hoobies              | mobile               | purchaseveh
+-----+--------+---------------------------------------+----------------------+----------------------+---------------
+   5 |  mansi |    ('mno@gmail.com', 'hij@gmail.com') |     ['cook', 'swim'] |   {234499, 79083452} |  {'auto': 89}
+   1 |   sita |    ('xxx@gmail.com', 'yyy@gmail.com') | ['biking', 'hiking'] |      {45465, 764487} |  {'ford': 23}
+   2 |   aish |    ('xax@gmail.com', 'yay@gmail.com') |          ['drawing'] |    {454899, 7623287} |    {'bmw': 1}
+   4 | nayana |    ('opq@gmail.com', 'pqr@gmail.com') |     ['arts', 'draw'] | {4545469, 323424287} | {'nexon': 15}
+   3 | arnavi | ('xxs@gmail.com', 'sdhajh@gmail.com') |    ['read', 'study'] |      {12234, 765768} |  {'alto': 30}
+
+(5 rows)
+
+7] add and delete one of the purchase vehicle
+
+cqlsh:iacsd0923> update cust_1
+             ... set purchaseveh=purchaseveh-{'alto'}
+             ... where cid=3;
+cqlsh:iacsd0923> select * from cust_1;
+
+ cid | cname  | email                                 | hoobies              | mobile               | purchaseveh
+-----+--------+---------------------------------------+----------------------+----------------------+---------------
+   5 |  mansi |    ('mno@gmail.com', 'hij@gmail.com') |     ['cook', 'swim'] |   {234499, 79083452} |  {'auto': 89}
+   1 |   sita |    ('xxx@gmail.com', 'yyy@gmail.com') | ['biking', 'hiking'] |      {45465, 764487} |  {'ford': 23}
+   2 |   aish |    ('xax@gmail.com', 'yay@gmail.com') |          ['drawing'] |    {454899, 7623287} |    {'bmw': 1}
+   4 | nayana |    ('opq@gmail.com', 'pqr@gmail.com') |     ['arts', 'draw'] | {4545469, 323424287} | {'nexon': 15}
+   3 | arnavi | ('xxs@gmail.com', 'sdhajh@gmail.com') |    ['read', 'study'] |      {12234, 765768} |          null
+
+(5 rows)
+
+8]add and delete one of the hobbies for customer 14
+(5 rows)
+cqlsh:iacsd0923> update cust_1
+             ... set hoobies=hoobies+['read']
+             ... where cid=4;
+cqlsh:iacsd0923> select * from cust_1;
+
+ cid | cname  | email                                 | hoobies                  | mobile               | purchaseveh
+-----+--------+---------------------------------------+--------------------------+----------------------+---------------
+   5 |  mansi |    ('mno@gmail.com', 'hij@gmail.com') |         ['cook', 'swim'] |   {234499, 79083452} |  {'auto': 89}
+   1 |   sita |    ('xxx@gmail.com', 'yyy@gmail.com') |     ['biking', 'hiking'] |      {45465, 764487} |  {'ford': 23}
+   2 |   aish |    ('xax@gmail.com', 'yay@gmail.com') |              ['drawing'] |    {454899, 7623287} |    {'bmw': 1}
+   4 | nayana |    ('opq@gmail.com', 'pqr@gmail.com') | ['arts', 'draw', 'read'] | {4545469, 323424287} | {'nexon': 15}
+   3 | arnavi | ('xxs@gmail.com', 'sdhajh@gmail.com') |        ['read', 'study'] |      {12234, 765768} |          null
+
+(5 rows)
+
+9.change the quantity of vehicle activa from customer id 15
+
+cqlsh:iacsd0923> update cust_1
+             ... set purchaseveh= {'activa':90}
+             ... where cid=5;
+cqlsh:iacsd0923> select * from cust_1;
+
+ cid | cname  | email                                 | hoobies                  | mobile               | purchaseveh
+-----+--------+---------------------------------------+--------------------------+----------------------+----------------
+   5 |  mansi |    ('mno@gmail.com', 'hij@gmail.com') |         ['cook', 'swim'] |   {234499, 79083452} | {'activa': 90}
+   1 |   sita |    ('xxx@gmail.com', 'yyy@gmail.com') |     ['biking', 'hiking'] |      {45465, 764487} |   {'ford': 23}
+   2 |   aish |    ('xax@gmail.com', 'yay@gmail.com') |              ['drawing'] |    {454899, 7623287} |     {'bmw': 1}
+   4 | nayana |    ('opq@gmail.com', 'pqr@gmail.com') | ['arts', 'draw', 'read'] | {4545469, 323424287} |  {'nexon': 15}
+   3 | arnavi | ('xxs@gmail.com', 'sdhajh@gmail.com') |        ['read', 'study'] |      {12234, 765768} |           null
+
+
+Q2 create a batch to add 2 records in customer table, delete record for customer 13 
+and delete only email from customer 11
+and update emails for customer 12
+
+cqlsh:iacsd0923> begin batch
+             ... insert into cust_1(cid,cname,email,mobile,purchaseveh,hoobies) values
+             ... (6,'nay',('opqdefg@gmail.com','pqrfdfg@gmail.com'),{454535469,424287},{'nex34on':156},['arts','draw']);
+             ...
+             ... insert into cust_1(cid,cname,email,mobile,purchaseveh,hoobies) values
+             ... (7,'masi',('mno@gmdail.com','hijfdg@gmail.com'),{2342299,43452},{'au42to':89},['cook','swim']);
+             ...
+             ... delete from cust_1 where cid =3;
+             ... delete email from cust_1 where cid=1;
+             ... update cust_1 set email=('hgjg@hjh', 'hjk@gmail') where cid=12;
+             ... apply batch;
+cqlsh:iacsd0923> select * from cust_1;
+
+ cid | cname  | email                                      | hoobies                  | mobile               | purchaseveh
+-----+--------+--------------------------------------------+--------------------------+----------------------+------------------
+   5 |  mansi |         ('mno@gmail.com', 'hij@gmail.com') |         ['cook', 'swim'] |   {234499, 79083452} |   {'activa': 90}
+   1 |   sita |                                       null |     ['biking', 'hiking'] |      {45465, 764487} |     {'ford': 23}
+   2 |   aish |         ('xax@gmail.com', 'yay@gmail.com') |              ['drawing'] |    {454899, 7623287} |       {'bmw': 1}
+   4 | nayana |         ('opq@gmail.com', 'pqr@gmail.com') | ['arts', 'draw', 'read'] | {4545469, 323424287} |    {'nexon': 15}
+   7 |   masi |     ('mno@gmdail.com', 'hijfdg@gmail.com') |         ['cook', 'swim'] |     {43452, 2342299} |   {'au42to': 89}
+   6 |    nay | ('opqdefg@gmail.com', 'pqrfdfg@gmail.com') |         ['arts', 'draw'] |  {424287, 454535469} | {'nex34on': 156}
+  12 |   null |                  ('hgjg@hjh', 'hjk@gmail') |                     null |                 null |             null
+
+(7 rows)
+
+Q3. create type department to store deptno, dname
+a. 
+change the type department to add dloc in it.
+
+cqlsh:iacsd0923> create type department(deptno,dname);
+cqlsh:iacsd0923> alter type department add dloc text;
+
+create table emp to store eid, ename, sal, projects List<text>, dept department 
+add 5 records in the table
+
+cqlsh:iacsd0923> create table store(
+             ... eid int primary key,
+             ... ename varchar,
+             ... sal int,
+             ... project list<text>,
+             ... dept varchar);
+cqlsh:iacsd0923> desc store
+
+CREATE TABLE iacsd0923.store (
+    eid int PRIMARY KEY,
+    dept text,
+    ename text,
+    project list<text>,
+    sal int
+) WITH bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'chunk_length_in_kb': '64', 'class': 'org.apache.cassandra.io.compress.LZ4Compressor'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 0
+    AND gc_grace_seconds = 864000
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+cqlsh:iacsd0923> insert into store(eid,ename,sal,project,dept) values(1,'vaish',3000,['a','b'],'abc');
+cqlsh:iacsd0923> insert into store(eid,ename,sal,project,dept) values(2,'vai',5000,['c','b'],'asgc');
+b.
+create index on ename column
+cqlsh:iacsd0923> create index idxname on store(ename);
+cqlsh:iacsd0923> select * from store;
+
+ eid | dept | ename | project    | sal
+-----+------+-------+------------+------
+   1 |  abc | vaish | ['a', 'b'] | 3000
+   2 | asgc |   vai | ['c', 'b'] | 5000
+
+(2 rows)
