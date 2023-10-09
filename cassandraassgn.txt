@@ -1,0 +1,116 @@
+create1. create a customer table to store following columns, customer id as primary key
+customer id, name, mobile set<int>,email tuple(text,text),purchaseveh map<text,int>,hoobies list<text>
+cqlsh:iacsd999>  create table cust(
+            ... custid int primary key,
+            ... cname text,
+            ... mobile set<int>,
+            ... email tuple<text,text>,
+            ... purchaseveh map<text,int>,
+            ... hobies list<text>);
+cqlsh:iacsd999> select * from cust;
+
+ custid | cname | email | hobies | mobile | purchaseveh
+--------+-------+-------+--------+--------+-------------
+
+(0 rows)
+2. insert 5 records with customer id 11,12,13,14,15
+cqlsh:iacsd999> insert into cust(custid) values(11);
+cqlsh:iacsd999> insert into cust(custid) values(12);
+cqlsh:iacsd999> insert into cust(custid) values(13);
+cqlsh:iacsd999> insert into cust(custid) values(14);
+cqlsh:iacsd999> insert into cust(custid) values(15);
+
+3. add hoobies design, drawing for custid=12
+cqlsh:iacsd999> insert into cust(custid,hobies) values(12,['design','drawing']);
+cqlsh:iacsd999> select * from cust;
+
+ custid | cname | email | hobies                | mobile | purchaseveh
+--------+-------+-------+-----------------------+--------+-------------
+     13 |  null |  null |                  null |   null |        null
+     11 |  null |  null |                  null |   null |        null
+     15 |  null |  null |                  null |   null |        null
+     14 |  null |  null |                  null |   null |        null
+     12 |  null |  null | ['design', 'drawing'] |   null |        null
+
+(5 rows)
+
+4. remove hoobies design for custid=12
+cqlsh:iacsd999> delete hobies[0] from cust where custid=12;
+cqlsh:iacsd999> select * from cust;
+
+ custid | cname | email | hobies      | mobile | purchaseveh
+--------+-------+-------+-------------+--------+-------------
+     13 |  null |  null |        null |   null |        null
+     11 |  null |  null |        null |   null |        null
+     15 |  null |  null |        null |   null |        null
+     14 |  null |  null |        null |   null |        null
+     12 |  null |  null | ['drawing'] |   null |        null
+
+(5 rows)
+
+5. update name of customer with id 11
+cqlsh:iacsd999> insert into cust(custid,cname) values(11,'xxx');
+cqlsh:iacsd999> select * from cust;
+
+ custid | cname | email | hobies      | mobile | purchaseveh
+--------+-------+-------+-------------+--------+-------------
+     13 |  null |  null |        null |   null |        null
+     11 |   xxx |  null |        null |   null |        null
+     15 |  null |  null |        null |   null |        null
+     14 |  null |  null |        null |   null |        null
+     12 |  null |  null | ['drawing'] |   null |        null
+
+(5 rows)
+cqlsh:iacsd999> delete purchaseveh from cust where custid=12;
+
+6. modify emails of customer 13
+cqlsh:iacsd999> insert into cust(custid,email) values(11,'xxx@123');
+
+7. add and delete one of the purchase vhicle
+
+cqlsh:iacsd999> insert into cust(custid,purchaseveh) values(14,{'wagonR':2133});
+cqlsh:iacsd999> insert into cust(custid,purchaseveh) values(12,{'audi':0000});
+cqlsh:iacsd999> select * from cust;
+
+ custid | cname | email             | hobies      | mobile | purchaseveh
+--------+-------+-------------------+-------------+--------+------------------
+     13 |  null |              null |        null |   null |             null
+     11 |   xxx | ('xxx@123', None) |        null |   null |   {'nano': 2233}
+     15 |  null |              null |        null |   null |             null
+     14 |  null |              null |        null |   null | {'wagonR': 2133}
+     12 |  null |              null | ['drawing'] |   null |      {'audi': 0}
+
+
+8. add and delete one of the hobbies for customer 14st
+cqlsh:iacsd999> insert into cust(custid,hobies) values(14,['reading','riding']);
+cqlsh:iacsd999> delete hobies[1] from cust where custid=14;
+
+9.change the quantity of vehicle activa from customer id 15
+cqlsh:iacsd999> update cust set purchaseveh['activa']=123 where custid=15;
+cqlsh:iacsd999> select * from cust;
+
+ custid | cname | email             | hobies      | mobile | purchaseveh
+--------+-------+-------------------+-------------+--------+------------------
+     13 |  null |              null |        null |   null |             null
+     11 |   xxx | ('xxx@123', None) |        null |   null |   {'nano': 2233}
+     15 |  null |              null |        null |   null |  {'activa': 123}
+     14 |  null |              null | ['reading'] |   null | {'wagonR': 2133}
+     12 |  null |              null | ['drawing'] |   null |   {'audi': 1001}
+
+(5 rows)
+
+
+
+Q2create a batch to add 2 records in customer table, delete record for customer 13 
+and delete only email from customer 11
+and update emails for customer 12
+
+
+Q3. create type department to store deptno, dname
+a. 
+change the type department to add dloc in it.
+
+create table emp to store eid, ename, sal, projects List<text>, dept department 
+add 5 records in the table
+b.
+create index on ename column
