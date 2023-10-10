@@ -3808,10 +3808,432 @@ iacsd0923> db.restaurent.find({'address.coord.1':{$gt:42,$lt:52}},{name:1,restau
   }]
 25. Write a MongoDB query to arrange the name of the restaurants in ascending order along
 with all the columns.
+iacsd0923> db.restaurent.find({},{_id:0}).sort({name:1})
+[
+  {
+    address: {
+      building: '154',
+      coord: [ -73.9189064, 40.8654529 ],
+      street: 'Post Ave',
+      zipcode: '10034'
+    },
+    borough: 'Manhattan',
+    cuisine: 'Other',
+    grades: [],
+    name: '',
+    restaurant_id: '50017887'
+  },
+  {
+    address: {
+      building: '508',
+      coord: [ -73.999813, 40.683876 ],
+      street: 'Henry St',
+      zipcode: '11231'
+    },
+    borough: 'Brooklyn',
+    cuisine: 'Other',
+    grades: [],
+    name: '',
+    restaurant_id: '50017910'
+  },
+  {
+    address: {
+      building: '15',
+      coord: [ -73.9966882, 40.7139264 ],
+      street: 'Division St',
+      zipcode: '10002'
+    },
+    borough: 'Manhattan',
+    cuisine: 'Other',
+    grades: [],
+    name: '',
+    restaurant_id: '50017912'
+  },
+  {
+    address: {
+      building: '4704',
+      coord: [ -74.013391, 40.64943 ],
+      street: '3Rd Ave',
+      zipcode: '11220'
+    },
+    borough: 'Brooklyn',
+    cuisine: 'Other',
+    grades: [],
+    name: '',
+    restaurant_id: '50017925'
+  },
+  {
+    address: {
+      building: '2145',
+      coord: [ -73.8668062, 40.8547454 ],
+      street: 'Cruger Ave',
+      zipcode: '10462'
+    },
+    borough: 'Bronx',
+    cuisine: 'Other',
+    grades: [],
+    name: '',
+    restaurant_id: '50017935'
+  }
 26. Write a MongoDB query to arrange the name of the restaurants in descending along with
 all the columns.
+iacsd0923> db.restaurent.find({},{_id:0}).sort({name:-1})
+[
+  {
+    address: {
+      building: '1',
+      coord: [ -74.073156, 40.6457369 ],
+      street: 'Richmond Terrace',
+      zipcode: '10301'
+    },
+    borough: 'Staten Island',
+    cuisine: 'Pizza',
+    grades: [
+      {
+        date: ISODate("2015-01-13T00:00:00.000Z"),
+        grade: 'Z',
+        score: 18
+      },
+      {
+        date: ISODate("2014-07-24T00:00:00.000Z"),
+        grade: 'A',
+        score: 12
+      },
+      {
+        date: ISODate("2013-11-08T00:00:00.000Z"),
+        grade: 'B',
+        score: 21
+      },
+      {
+        date: ISODate("2013-04-17T00:00:00.000Z"),
+        grade: 'A',
+        score: 12
+      }
+    ],
+    name: "Zz'S Pizza & Grill",
+    restaurant_id: '41702705'
+  },
+  {
+    address: {
+      building: '169',
+      coord: [ -74.000466, 40.727688 ],
+      street: 'Thompson Street',
+      zipcode: '10012'
+    },
+    borough: 'Manhattan',
+    cuisine: 'Other',
+    grades: [
+      {
+        date: ISODate("2014-05-15T00:00:00.000Z"),
+        grade: 'A',
+        score: 10
+      }
+    ],
+    name: 'Zz Clam Bar',
+    restaurant_id: '50001062'
+  },
+  {
+    address: {
+      building: '726',
+      coord: [ -73.8662887, 40.8594314 ],
+      street: 'Astor Avenue',
+      zipcode: '10467'
+    },
+    borough: 'Bronx',
+    cuisine: 'American',
+    grades: [
+      {
+        date: ISODate("2014-09-09T00:00:00.000Z"),
+        grade: 'C',
+        score: 75
+      },
+      {
+        date: ISODate("2014-03-26T00:00:00.000Z"),
+        grade: 'A',
+        score: 5
+      },
+      {
+        date: ISODate("2013-08-22T00:00:00.000Z"),
+        grade: 'B',
+        score: 18
+      }
+    ],
+    name: 'Zymi Bar & Grill',
+    restaurant_id: '41712791'
+  },
+  {
+    address: {
+      building: '173',
+      coord: [ -73.98195249999999, 40.6784779 ],
+      street: '4 Avenue',
+      zipcode: '11217'
+    },
+    borough: 'Brooklyn',
+    cuisine: 'Japanese',
+    grades: [
+      {
+        date: ISODate("2014-07-01T00:00:00.000Z"),
+        grade: 'A',
+        score: 11
+      },
+      {
+        date: ISODate("2013-12-20T00:00:00.000Z"),
+        grade: 'A',
+        score: 9
+      },
+      {
+        date: ISODate("2013-03-21T00:00:00.000Z"),
+        grade: 'A',
+        score: 7
+      }
 27. Write a MongoDB query to arranged the name of the cuisine in ascending order and for
 that same cuisine borough should be in descending order.
+iacsd0923> db.restaurent.find({},{_id:0}).sort({cuisine:-1,borough:-1})
+[
+  {
+    address: {
+      building: '8278',
+      coord: [ -73.88143509999999, 40.7412552 ],
+      street: 'Broadway',
+      zipcode: '11373'
+    },
+    borough: 'Queens',
+    cuisine: 'Vietnamese/Cambodian/Malaysia',
+    grades: [
+      {
+        date: ISODate("2014-06-12T00:00:00.000Z"),
+        grade: 'B',
+        score: 21
+      },
+      {
+        date: ISODate("2013-05-20T00:00:00.000Z"),
+        grade: 'A',
+        score: 13
+      },
+      {
+        date: ISODate("2012-12-26T00:00:00.000Z"),
+        grade: 'A',
+        score: 10
+      },
+      {
+        date: ISODate("2012-12-03T00:00:00.000Z"),
+        grade: 'P',
+        score: 5
+      },
+      {
+        date: ISODate("2012-05-04T00:00:00.000Z"),
+        grade: 'B',
+        score: 27
+      }
+    ],
+    name: 'Pho Bac Vietnamese Seafood Cuisine',
+    restaurant_id: '40578058'
+  },
+  {
+    address: {
+      building: '156-32',
+      coord: [ -73.8087286, 40.7639199 ],
+      street: 'Northern Boulevard',
+      zipcode: '11354'
+    },
+    borough: 'Queens',
+    cuisine: 'Vietnamese/Cambodian/Malaysia',
+    grades: [
+      {
+        date: ISODate("2014-09-11T00:00:00.000Z"),
+        grade: 'A',
+        score: 13
+      },
+      {
+        date: ISODate("2014-04-08T00:00:00.000Z"),
+        grade: 'A',
+        score: 11
+      },
+      {
+        date: ISODate("2013-10-07T00:00:00.000Z"),
+        grade: 'A',
+        score: 12
+      },
+      {
+        date: ISODate("2012-09-13T00:00:00.000Z"),
+        grade: 'A',
+        score: 2
+      },
+      {
+        date: ISODate("2012-04-26T00:00:00.000Z"),
+        grade: 'A',
+        score: 7
+      },
+      {
+        date: ISODate("2011-11-09T00:00:00.000Z"),
+        grade: 'A',
+        score: 10
+      }
+    ],
+    name: 'Mekong Thai And Vietnamese Restaurant',
+    restaurant_id: '41022628'
+  },
+  {
+    address: {
+      building: '4107',
+      coord: [ -73.8293161, 40.7583823 ],
+      street: 'Kissena Boulevard',
+      zipcode: '11355'
+    },
+    borough: 'Queens',
+    cuisine: 'Vietnamese/Cambodian/Malaysia',
+    grades: [
+      {
+        date: ISODate("2014-11-13T00:00:00.000Z"),
+        grade: 'A',
+        score: 10
+      },
+      {
+        date: ISODate("2014-05-20T00:00:00.000Z"),
+        grade: 'A',
+        score: 8
+      },
+      {
+        date: ISODate("2013-10-16T00:00:00.000Z"),
+        grade: 'B',
+        score: 22
+      },
+      {
+        date: ISODate("2013-03-20T00:00:00.000Z"),
+        grade: 'B',
+        score: 18
+      },
+      {
+        date: ISODate("2012-08-01T00:00:00.000Z"),
+        grade: 'B',
+        score: 16
+      },
+      {
+        date: ISODate("2011-12-14T00:00:00.000Z"),
+        grade: 'B',
+        score: 17
+      }
+    ],
+    name: 'Pho Bang Restaurant',
+    restaurant_id: '41145163'
+  },
+  {
+    address: {
+      building: '4010',
+      coord: [ -73.8915947, 40.746408 ],
+      street: '74 Street',
+      zipcode: '11373'
+    },
+    borough: 'Queens',
+    cuisine: 'Vietnamese/Cambodian/Malaysia',
+    grades: [
+      {
+        date: ISODate("2014-08-12T00:00:00.000Z"),
+        grade: 'A',
+        score: 7
+      },
+      {
+        date: ISODate("2014-01-09T00:00:00.000Z"),
+        grade: 'B',
+        score: 25
+      },
+      {
+        date: ISODate("2013-06-25T00:00:00.000Z"),
+        grade: 'A',
+        score: 13
+      },
+      {
+        date: ISODate("2012-05-07T00:00:00.000Z"),
+        grade: 'A',
+        score: 12
+      },
+      {
+        date: ISODate("2011-12-28T00:00:00.000Z"),
+        grade: 'A',
+        score: 12
+      }
+    ],
+    name: 'Thai Son',
+    restaurant_id: '41221266'
+  },
+  {
+    address: {
+      building: '82-90',
+      coord: [ -73.8848687, 40.743896 ],
+      street: 'Broadway',
+      zipcode: '11373'
+    },
+    borough: 'Queens',
+    cuisine: 'Vietnamese/Cambodian/Malaysia',
+    grades: [
+      {
+        date: ISODate("2014-07-02T00:00:00.000Z"),
+        grade: 'B',
+        score: 26
+      },
+      {
+        date: ISODate("2013-10-23T00:00:00.000Z"),
+        grade: 'B',
+        score: 18
+      },
+      {
+        date: ISODate("2013-05-30T00:00:00.000Z"),
+        grade: 'B',
+        score: 22
+      },
+      {
+        date: ISODate("2012-12-18T00:00:00.000Z"),
+        grade: 'A',
+        score: 7
+      },
+      {
+        date: ISODate("2012-09-04T00:00:00.000Z"),
+        grade: 'C',
+        score: 10
+      },
+      {
+        date: ISODate("2012-02-24T00:00:00.000Z"),
+        grade: 'B',
+        score: 17
+      }
+    ],
+    name: 'Pho Bang Restaurant',
+    restaurant_id: '41338955'
+  },
+  {
+    address: {
+      building: '3802',
+      coord: [ -73.83283279999999, 40.7600184 ],
+      street: 'Prince Street',
+      zipcode: '11354'
+    },
+    borough: 'Queens',
+    cuisine: 'Vietnamese/Cambodian/Malaysia',
+    grades: [
+      {
+        date: ISODate("2014-06-02T00:00:00.000Z"),
+        grade: 'A',
+        score: 9
+      },
+      {
+        date: ISODate("2013-12-03T00:00:00.000Z"),
+        grade: 'A',
+        score: 11
+      },
+      {
+        date: ISODate("2012-07-19T00:00:00.000Z"),
+        grade: 'A',
+        score: 7
+      },
+      {
+        date: ISODate("2012-03-06T00:00:00.000Z"),
+        grade: 'A',
+        score: 9
+      }
+    ],
+    name: 'Pho Vietnamese Restaurant',
+    restaurant_id: '41379217'
+  },
 28. Write a MongoDB query to know whether all the addresses contains the street or not.
 29. Write a MongoDB query which will select all documents in the restaurants collection
 where the coord field value is Double.
