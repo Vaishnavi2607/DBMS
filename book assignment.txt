@@ -1,0 +1,301 @@
+
+{
+    _id: 2,
+    title: 'Android in Action, Second Edition',
+    isbn: '1935182722',
+    pageCount: 592,
+    publishedDate: ISODate("2011-01-14T08:00:00.000Z"),
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ableson2.jpg',
+    shortDescription: `Android in Action, Second Edition is a comprehensive tutorial for Android developers. Taking you far beyond "Hello Android," this fast-paced book puts you in the driver's seat as you learn important architectural concepts and implementation strategies. You'll master the SDK, build WebKit apps using HTML 5, and even learn to extend or replace Android's built-in features by building useful and intriguing examples. `,
+    longDescription: `When it comes to mobile apps, Android can do almost anything   and with this book, so can you! Android runs on mobile devices ranging from smart phones to tablets to countless special-purpose gadgets. It's the broadest mobile platform available.    Android in Action, Second Edition is a comprehensive tutorial for Android developers. Taking you far beyond "Hello Android," this fast-paced book puts you in the driver's seat as you learn important architectural concepts and implementation strategies. You'll master the SDK, build WebKit apps using HTML 5, and even learn to extend or replace Android's built-in features by building useful and intriguing examples. `,
+    status: 'PUBLISH',
+    authors: [ 'W. Frank Ableson', 'Robi Sen' ],
+    categories: [ 'Java' ]
+  },
+
+1. Find all books whose author is Faisal Abid and display name of book authors and
+categories
+
+iacsd0923> db.book.find({authors:'Faisal Abid'},{title:1,authors:1,categories:1})
+[
+  {
+    _id: 4,
+    title: 'Flex 3 in Action',
+    authors: [ 'Tariq Ahmed with Jon Hirschi', 'Faisal Abid' ],
+    categories: [ 'Internet' ]
+  }
+]
+
+2. List all the books with category Internet at first position in category array
+iacsd0923> db.book.find({'categories.0':'Internet'},{})
+[
+  {
+    _id: 4,
+    title: 'Flex 3 in Action',
+    isbn: '1933988746',
+    pageCount: 576,
+    publishedDate: ISODate("2009-02-02T08:00:00.000Z"),
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ahmed.jpg',
+    longDescription: "New web applications require engaging user-friendly interfaces   and the cooler, the better. With Flex 3, web developers at any skill level can create high-quality, effective, and interactive Rich Internet Applications (RIAs) quickly and easily. Flex removes the complexity barrier from RIA development by offering sophisticated tools and a straightforward programming language so you can focus on what you want to do instead of how to do it. And now that the major components of Flex are free and open-source, the cost barrier is gone, as well!    Flex 3 in Action is an easy-to-follow, hands-on Flex tutorial. Chock-full of examples, this book goes beyond feature coverage and helps you put Flex to work in real day-to-day tasks. You'll quickly master the Flex API and learn to apply the techniques that make your Flex applications stand out from the crowd.    Interesting themes, styles, and skins  It's in there.  Working with databases  You got it.  Interactive forms and validation  You bet.  Charting techniques to help you visualize data  Bam!  The expert authors of Flex 3 in Action have one goal   to help you get down to business with Flex 3. Fast.    Many Flex books are overwhelming to new users   focusing on the complexities of the language and the super-specialized subjects in the Flex eco-system; Flex 3 in Action filters out the noise and dives into the core topics you need every day. Using numerous easy-to-understand examples, Flex 3 in Action gives you a strong foundation that you can build on as the complexity of your projects increases.",
+    status: 'PUBLISH',
+    authors: [ 'Tariq Ahmed with Jon Hirschi', 'Faisal Abid' ],
+    categories: [ 'Internet' ]
+  },
+
+
+    status: 'PUBLISH',
+    authors: [ 'Richard Scott Mark' ],
+    categories: [ 'Internet' ]
+  }
+
+3. Change the status of books “undergoing change” for books having more than 500
+pages and published in 2009
+
+iacsd0923> db.book.update({pageCount:{$gt:500},$expr:{$eq:[{$year:'$publishedDate'},2009]}},
+... {$set:{status:'undergoing change'}},
+... {multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 8,
+  modifiedCount: 8,
+  upsertedCount: 0
+}
+
+4. Find all the books containing word highlighting and depth in long description of the
+book
+
+
+iacsd0923> db.book.find({longDescription:/[Hh]ighlighting/,longDescription:/[Dd]epth/},{})
+[
+  {
+    _id: 140,
+    title: 'Lucene in Action',
+    isbn: '1932394281',
+    pageCount: 456,
+    publishedDate: ISODate("2004-12-01T08:00:00.000Z"),
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/hatcher2.jpg',
+    longDescription: "Lucene is a gem in the open-source world--a highly scalable, fast search engine. It delivers performance and is disarmingly easy to use. Lucene in Action is the authoritative guide to Lucene. It describes how to index your data, including types you definitely need to know such as MS Word, PDF, HTML, and XML. It introduces you to searching, sorting, filtering, and highlighting search results.    Lucene powers search in surprising places--in discussion groups at Fortune 100 companies, in commercial issue trackers, in email search from Microsoft, in the Nutch web search engine (that scales to billions of pages). It is used by diverse companies including Akamai, Overture, Technorati, HotJobs, Epiphany, FedEx, Mayo Clinic, MIT, New Scientist Magazine, and many others.    Adding search to your application can be easy. With many reusable examples and good advice on best practices, Lucene in Action shows you how. And if you would like to search through Lucene in Action over the Web, you can do so using Lucene itself as the search engine--take a look at the authors' awesome Search Inside solution. Its results page resembles Google's and provides a novel yet familiar interface to the entire book and book blog.",
+    status: 'PUBLISH',
+    authors: [ 'Erik Hatcher', 'Otis Gospodnetic' ],
+    categories: [ 'Java' ]
+  },
+
+5. Display all books published in 2009
+iacsd0923> db.book.find({$expr:{$eq:[{$year:'$publishedDate'},2009]}})
+[
+  {
+    _id: 1,
+    title: 'Unlocking Android',
+    isbn: '1933988673',
+    pageCount: 416,
+    publishedDate: ISODate("2009-04-01T07:00:00.000Z"),
+    
+    status: 'PUBLISH',
+    authors: [ 'W. Frank Ableson', 'Charlie Collins', 'Robi Sen' ],
+    categories: [ 'Open Source', 'Mobile' ]
+  }
+ _id: 223,
+    title: 'JavaFX in Action',
+    isbn: '1933988991',
+    pageCount: 373,
+    publishedDate: ISODate("2009-10-01T07:00:00.000Z"),
+  status: 'PUBLISH',
+    authors: [ 'Simon Morris' ],
+    categories: [ 'Java' ]
+  },
+
+6. Find all books with pageCount is either 500 or 556 or 670
+
+iacsd0923> db.book.find({pageCount:{$in:[500,556,670]}})
+[
+  {
+    _id: 54,
+    title: 'Android in Practice',
+    isbn: '1935182927',
+    pageCount: 500,
+    publishedDate: ISODate("2011-09-30T07:00:00.000Z"),
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/collins.jpg',
+    shortDescription: 'Android in Practice is treasure trove of Android goodness, with over 100 tested, ready-to-use techniques including complete end-to-end example applications and practical tips for real world mobile application developers. Written by real world Android developers, this book addresses the trickiest questions raised in forums and mailing lists. Using an easy-to-follow problem/solution/discussion format, it dives into important topics not covered in other Android books, like advanced drawing and graphics, testing and instrumentation, building and deploying applications, using alternative languages, and native development.',
+    longDescription: `Android, Google's platform for mobile application development, provides powerful features, a robust SDK, and almost limitless possibilities. It's not hard to find the information you need to build your first Android app, but then what  If you want to build real apps for real users, you have real questions and you need real answers.    Android in Practice is treasure trove of Android goodness, with over 100 tested, ready-to-use techniques including complete end-to-end example applications and practical tips for real world mobile application developers. Written by real world Android developers, this book addresses the trickiest questions raised in forums and mailing lists. Using an easy-to-follow problem/solution/discussion format, it dives into important topics not covered in other Android books, like advanced drawing and graphics, testing and instrumentation, building and deploying applications, using alternative languages, and native development.    If you're new to Android, or even if you have a few cycles under your belt, you'll love the quick "pre-flight check," where you'll review key platform details and tools and the building blocks of all Android applications. Then, you'll delve into Android use cases   from visual elements and style, to saving and sharing data, networking, background tasks, concurrency, and more.`,
+    status: 'PUBLISH',
+    authors: [ 'Charlie Collins', 'Michael D. Galpin', '', 'Matthias Kaeppler' ],
+    categories: [ 'Mobile Technology' ]
+  },
+
+
+7. Add 2 categories “kindle” and “hard bind” in all the books if its pageCount >200 and
+< 500 or number of pages >500
+iacsd0923> db.book.update({$or:[{pageCount:{$gt:200,$lt:500}},{pageCount:{$gt:500}}]},{$push:{categories:['Kindle','hard bind']}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 255,
+  modifiedCount: 255,
+  upsertedCount: 0
+}
+8. List all the books which has thumbnailUrl key
+iacsd0923> db.book.find({},{thumbnailUrl:1,_id:0})
+[
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ableson2.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ableson.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/adzic.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ahmed.jpg'
+  }
+9. Add key type with values [“fiction”,”moral stories”,”adventurous”] in all books
+whose title starts with Fl and contains a some where in the name
+iacsd0923> db.book.update({title:/Fl/},{$push:{type:['fiction','moral stories','adventurous']}},{upsert:true,multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 6,
+  modifiedCount: 6,
+  upsertedCount: 0
+}
+
+10. Add a key comments :[{comment:” like the book” ,date:ISODate(“2019-09-01”)},
+iacsd0923> db.book.update({},{$push:{comments:[{comment:'like the book', date:ISODate('2019-09-01')}]}},{upsert:true,multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 430,
+  modifiedCount: 430,
+  upsertedCount: 0
+}
+iacsd0923> db.book.find({},{comments:1})
+[
+  {
+    _id: 2,
+    comments: [
+      [
+        {
+          comment: 'like the book',
+          date: ISODate("2019-09-01T00:00:00.000Z")
+        }
+      ],
+      [
+        {
+          comment: 'like the book',
+          date: ISODate("2019-09-01T00:00:00.000Z")
+        }
+      ]
+    ]
+11. Add new author “myauthor” at position 2 for all books whose title starts with h or m
+and contains s at 2nd last position
+iacsd0923> db.book.update({$or:[{title:/^[Hh].*S.$/},{title:/^[Mm].*S.$/}]},{$push:{'authors.1':'myauthor'}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+12. Increase pageCount by 100 for all books whose author at 1 st position is “Gal
+Shachor”
+
+iacsd0923> db.book.update({'authors.0':'Gal Shachor'},{$inc:{pageCount:100}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+13. Overwrite “Magnus Rydin" with name “Fr”
+iacsd0923> db.book.update({title:'Android in Practice'},{$set:{title:'Fr'}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 2,
+  modifiedCount: 2,
+  upsertedCount: 0
+}
+14. List all books title, status, pageCount, comments for all books with pages > 300 or <
+500 or title starts with a or isbn starts with 193
+iacsd0923> db.book.find({$or:[{pageCount:{$gt:300,$lt:500}},{title:/^a/},{isbn:/193/}]},{title:1,status:1,pageCount:1,comments:1,_id:0})
+[
+  {
+    title: 'Android in Action, Second Edition',
+    pageCount: 592,
+    status: 'PUBLISH',
+    comments: [
+      [
+        {
+          comment: 'like the book',
+          date: ISODate("2019-09-01T00:00:00.000Z")
+        }
+      ],
+      [
+        {
+          comment: 'like the book',
+          date: ISODate("2019-09-01T00:00:00.000Z")
+        }
+      ]
+    ]
+  },
+  {
+    title: 'Unlocking Android',
+    pageCount: 416,
+    status: 'PUBLISH',
+    comments: [
+      [
+        {
+          comment: 'like the book',
+          date: ISODate("2019-09-01T00:00:00.000Z")
+        }
+      ]
+    ]
+  },
+  {
+    title: 'Flex 3 in Action',
+    pageCount: 576,
+    status: 'undergoing change',
+    comments: [
+      [
+        {
+          comment: 'like the book',
+          date: ISODate("2019-09-01T00:00:00.000Z")
+        }
+      ]
+    ]
+  },
+  {
+    title: 'Flex 4 in Action',
+    pageCount: 600,
+    status: 'PUBLISH',
+    comments: [
+      [
+        {
+          comment: 'like the book',
+          date: ISODate("2019-09-01T00:00:00.000Z")
+        }
+      ]
+    ]
+  }
+
+
+1. Display pageCount of books =( pageCount * 100 + (pagecount % 7)) of all books
+with isbn number starting with 193
+2. Display book code as first 3 charatcters of title followed by 4,5,6 character of isbn
+number
+3. Find sum, maximum, minimum of pageCount for all books
+4. Find sum, maximum, minimum,count of pageCount for all books categorywise and
+arrange it on count
+5. Display all books written by "Faisal Abid" display title, number of pages and author
+name. don’t display all author names
+6. Display book name, pages, isbn number and state as “old” if book is published before
+2010 otherwise display “in stock”
+7. Display 3 books with lowest number of pages published in 2010 or in 2011 or in
+2012 arrange it on title.
+8. List 3rd highest, 4th highest and 5th highest books according to number of pages
+arrange it on title. Display only title , isbn, pages
+9. Find sum of pageCount for all books categorywise if its title contains a or m and isbn
+contains number 7.
