@@ -3988,7 +3988,7 @@ iacsd0923> db.restaurent.find({},{_id:0}).sort({name:-1})
       }
 27. Write a MongoDB query to arranged the name of the cuisine in ascending order and for
 that same cuisine borough should be in descending order.
-iacsd0923> db.restaurent.find({},{_id:0}).sort({cuisine:-1,borough:-1})
+iacsd0923> db.restaurent.find({},{_id:0}).sort({cuisine:1,borough:-1})
 [
   {
     address: {
@@ -4235,11 +4235,266 @@ iacsd0923> db.restaurent.find({},{_id:0}).sort({cuisine:-1,borough:-1})
     restaurant_id: '41379217'
   },
 28. Write a MongoDB query to know whether all the addresses contains the street or not.
+sample> db.restaurent.find({},{'address.street':1})
+[
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dc8"),
+    address: { street: 'West   57 Street' }
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dc9"),
+    address: { street: 'Flatbush Avenue' }
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dca"),
+    address: { street: 'Stillwell Avenue' }
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dcb"),
+    address: { street: 'Morris Park Ave' }
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dcc"),
+    address: { street: '63 Road' }
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dcd"),
+    address: { street: 'Victory Boulevard' }
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dce"),
+    address: { street: 'Astoria Boulevard' }
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dcf"),
+    address: { street: 'Avenue U' }
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dd0"),
+    address: { street: '11 Avenue' }
+  }
+
 29. Write a MongoDB query which will select all documents in the restaurants collection
 where the coord field value is Double.
+sample> db.restaurent.find({'address.coord':{$type:'double'}},{'address.street':1,name:1,cuisine:1})
+[
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dc8"),
+    address: { street: 'West   57 Street' },
+    cuisine: 'Irish',
+    name: 'Dj Reynolds Pub And Restaurant'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dc9"),
+    address: { street: 'Flatbush Avenue' },
+    cuisine: 'Hamburgers',
+    name: "Wendy'S"
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dca"),
+    address: { street: 'Stillwell Avenue' },
+    cuisine: 'American',
+    name: 'Riviera Caterer'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dcb"),
+    address: { street: 'Morris Park Ave' },
+    cuisine: 'Bakery',
+    name: 'Morris Park Bake Shop'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dcc"),
+    address: { street: '63 Road' },
+    cuisine: 'Jewish/Kosher',
+    name: 'Tov Kosher Kitchen'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dcd"),
+    address: { street: 'Victory Boulevard' },
+    cuisine: 'Jewish/Kosher',
+    name: 'Kosher Island'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dce"),
+    address: { street: 'Astoria Boulevard' },
+    cuisine: 'American',
+    name: 'Brunos On The Boulevard'
+  },
+
 30. Write a MongoDB query which will select the restaurant Id, name and grades for those
 restaurants which returns 0 as a remainder after dividing the score by 7.
+sample> db.restaurent.find({'grades.score':{$mod:[7,0]}},{'address.street':1,name:1,cuisine:1})
+[
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dca"),
+    address: { street: 'Stillwell Avenue' },
+    cuisine: 'American',
+    name: 'Riviera Caterer'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dcb"),
+    address: { street: 'Morris Park Ave' },
+    cuisine: 'Bakery',
+    name: 'Morris Park Bake Shop'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dce"),
+    address: { street: 'Astoria Boulevard' },
+    cuisine: 'American',
+    name: 'Brunos On The Boulevard'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dd2"),
+    address: { street: 'Sutter Avenue' },
+    cuisine: 'Chinese',
+    name: 'May May Kitchen'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dd3"),
+    address: { street: 'East   66 Street' },
+    cuisine: 'American',
+    name: '1 East 66Th Street Kitchen'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dd5"),
+    address: { street: 'Kings Highway' },
+    cuisine: 'Jewish/Kosher',
+    name: 'Seuda Foods'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761ddd"),
+    address: { street: '10 Street' },
+    cuisine: 'Delicatessen',
+    name: "Steve Chu'S Deli & Grocery"
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dde"),
+    address: { street: '20 Avenue' },
+    cuisine: 'Delicatessen',
+    name: "Sal'S Deli"
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761ddf"),
+    address: { street: 'Amsterdam Avenue' },
+    cuisine: 'Chicken',
+    name: "Harriet'S Kitchen"
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761de2"),
+    address: { street: 'Myrtle Avenue' },
+    cuisine: 'Hamburgers',
+    name: 'White Castle'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761de4"),
+    address: { street: '37 Avenue' },
+    cuisine: 'Chinese',
+    name: 'Ho Mei Restaurant'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761de5"),
+    address: { street: 'East   56 Street' },
+    cuisine: 'Caribbean',
+    name: "Shashemene Int'L Restaura"
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761dea"),
+    address: { street: 'Prince Street' },
+    cuisine: 'Bakery',
+    name: "Olive'S"
+  }
 31. Write a MongoDB query to find the restaurant name, borough, longitude and attitude and
 cuisine for those restaurants which contains 'mon' as three letters somewhere in its name.
+
+sample> db.restaurent.find({name:/^.*[Mm]on.*$/},{'address.street':1,name:1,cuisine:1})
+[
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761e5a"),
+    address: { street: 'Park Avenue South' },
+    cuisine: 'American',
+    name: "Desmond'S Tavern"
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761e62"),
+    address: { street: 'Main Street' },
+    cuisine: 'Jewish/Kosher',
+    name: 'Shimons Kosher Pizza'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761e71"),
+    address: { street: 'Flagg Place' },
+    cuisine: 'American',
+    name: 'Richmond County Country Club'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761e9c"),
+    address: { street: '86 Street' },
+    cuisine: 'Pizza/Italian',
+    name: 'Lb Spumoni Gardens'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761eee"),
+    address: { street: 'Withers Street' },
+    cuisine: 'Italian',
+    name: "Bamonte'S Restaurant"
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761f24"),
+    address: { street: 'Broadway' },
+    cuisine: 'Greek',
+    name: 'Omonia Cafe'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84761f75"),
+    address: { street: 'Grove Street' },
+    cuisine: 'American',
+    name: 'Manhattan Monster'
+  }
 32. Write a MongoDB query to find the restaurant name, borough, longitude and latitude and
 cuisine for those restaurants which contain 'Mad' as first three letters of its name.
+
+sample> db.restaurent.find({name:/^[Mm]ad.*$/},{'address.street':1,name:1,cuisine:1})
+[
+  {
+    _id: ObjectId("653fe5bba2df3c0d84762304"),
+    address: { street: 'Madison Avenue' },
+    cuisine: 'American',
+    name: 'Madison Square'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d847623d2"),
+    address: { street: 'Lexington Avenue' },
+    cuisine: 'Indian',
+    name: 'Madras Mahal'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84762681"),
+    address: { street: 'West Houston Street' },
+    cuisine: 'American',
+    name: 'Madame X'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84762731"),
+    address: { street: 'Madison Avenue' },
+    cuisine: 'French',
+    name: 'Madison Bistro'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d847627ba"),
+    address: { street: 'Dekalb Avenue' },
+    cuisine: 'African',
+    name: 'Madiba'
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84762abd"),
+    address: { street: 'Riverdale Avenue' },
+    cuisine: 'Italian',
+    name: "Madison'S"
+  },
+  {
+    _id: ObjectId("653fe5bba2df3c0d84762b3a"),
+    address: { street: 'West   42 Street' },
+    cuisine: 'Hotdogs',
+    name: "Madame Tussaud'S"
+  },
+  {
