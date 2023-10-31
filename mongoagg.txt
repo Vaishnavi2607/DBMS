@@ -1,0 +1,366 @@
+1. Find all books whose author is Faisal Abid and display name of book authors and
+categories
+mydb> db.book.find({authors:'Faisal Abid'},{_id:0,authors:1,categories:1,title:1})
+[
+  {
+    title: 'Flex 3 in Action',
+    authors: [ 'Tariq Ahmed with Jon Hirschi', 'Faisal Abid' ],
+    categories: [ 'Internet' ]
+  }
+]
+
+2. List all the books with category Internet at first position in category array
+db.book.find({categories:['Internet']},{_id:0,authors:1,categories:1,title:1})
+[
+  {
+    title: 'Flex 3 in Action',
+    authors: [ 'Tariq Ahmed with Jon Hirschi', 'Faisal Abid' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'Collective Intelligence in Action',
+    authors: [ 'Satnam Alag' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'Flex 4 in Action',
+    authors: [ 'Tariq Ahmed', 'Dan Orlando', 'John C. Bland II', 'Joel Hooks' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'Flex on Java',
+    authors: [ 'Bernerd Allmon', 'Jeremy Anderson' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'Hello! Flex 4',
+    authors: [ 'Peter Armstrong' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'JSTL in Action',
+    authors: [ 'Shawn Bayern' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: "Website Owner's Manual",
+    authors: [ 'Paul A. Boag' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'Mobile Agents',
+    authors: [ 'William R. Cockayne and Michael Zyda', 'editors' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'Hello! HTML5 & CSS3',
+    authors: [ 'Rob Crowther' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'SCWCD Exam Study Kit Second Edition',
+    authors: [ 'Hanumant Deshmukh', 'Jignesh Malavia', '', 'Matthew Scarpino' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'RSS and Atom in Action',
+    authors: [ 'Dave Johnson' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'LDAP Programming, Management and Integration',
+    authors: [ 'Clayton Donley' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'OSGi in Action',
+    authors: [
+      'Richard S. Hall',
+      'Karl Pauls',
+      'Stuart McCulloch',
+      '',
+      'David Savage'
+    ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'Illustrated Guide to HTTP',
+    authors: [ 'Paul S. Hethmon' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'Rails 3 in Action',
+    authors: [ 'Ryan Bigg', 'Yehuda Katz' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'Restlet in Action',
+    authors: [ 'Jerome Louvel', 'Thierry Boileau', '', 'Philippe Mougin' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'Comprehensive Networking Glossary and Acronym Guide',
+    authors: [ 'Gary Scott Malkin' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'Internet BBSs',
+    authors: [ 'Richard Scott Mark' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'PostGIS in Action',
+    authors: [ 'Regina O. Obe', 'Leo S. Hsu' ],
+    categories: [ 'Internet' ]
+  },
+  {
+    title: 'The Cloud at Your Service',
+    authors: [ 'Jothy Rosenberg', 'Arthur Mateos' ],
+    categories: [ 'Internet' ]
+  }
+]
+3. Change the status of books “undergoing change” for books having more than 500
+pages and published in 2009
+mydb> db.book.update({pageCount:{$gt:500}},{$set:{status:'Undergoing changes'}},{multi:true,upsert:true})
+DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 90,
+  modifiedCount: 90,
+  upsertedCount: 0
+}
+4. Find all the books containing word highlighting and depth in long description of the
+book
+iacsd> db.book.update({pageCount:{$gt:500},$expr:{$eq:[{$year:'$publishedDate'},2009]}},{$set:{status:'Undergoing changes'}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 8,
+  modifiedCount: 8,
+  upsertedCount: 0
+}
+iacsd> db.book.find({pageCount:{$gt:500},$expr:{$eq:[{$year:'$publishedDate'},2009]},status:'Undergoing changes'},{_id:0,title:1,status:1})
+[
+  { title: 'Flex 3 in Action', status: 'Undergoing changes' },
+  { title: 'The Well-Grounded Rubyist', status: 'Undergoing changes' },
+  { title: 'Grails in Action', status: 'Undergoing changes' },
+  {
+    title: 'AspectJ in Action, Second Edition',
+    status: 'Undergoing changes'
+  },
+  { title: 'SQL Server MVP Deep Dives', status: 'Undergoing changes' },
+  { title: 'SQL Server MVP Deep Dives', status: 'Undergoing changes' },
+  { title: 'SQL Server MVP Deep Dives', status: 'Undergoing changes' },
+  {
+    title: 'Real-World Functional Programming',
+    status: 'Undergoing changes'
+  }
+]
+5. Display all books published in 2009
+iacsd> db.book.find({$expr:{$eq:[{$year:'$publishedDate'},2009]}},{_id:0,title:1,publishedDate:1})
+[
+  {
+    title: 'Flex 3 in Action',
+    publishedDate: ISODate("2009-02-02T08:00:00.000Z")
+  },
+  {
+    title: 'Unlocking Android',
+    publishedDate: ISODate("2009-04-01T07:00:00.000Z")
+  },
+  {
+    title: 'Hello! Flex 4',
+    publishedDate: ISODate("2009-11-01T07:00:00.000Z")
+  },
+  {
+    title: 'The Well-Grounded Rubyist',
+    publishedDate: ISODate("2009-04-01T07:00:00.000Z")
+  },
+  {
+    title: "Website Owner's Manual",
+    publishedDate: ISODate("2009-10-01T07:00:00.000Z")
+  },
+  {
+    title: 'SQL Server 2008 Administration in Action',
+    publishedDate: ISODate("2009-08-01T07:00:00.000Z")
+  },
+  {
+    title: 'Open Source SOA',
+    publishedDate: ISODate("2009-05-01T07:00:00.000Z")
+  },
+  {
+    title: 'Mule in Action',
+    publishedDate: ISODate("2009-07-01T07:00:00.000Z")
+  },
+  {
+    title: 'Grails in Action',
+    publishedDate: ISODate("2009-05-01T07:00:00.000Z")
+  },
+  {
+    title: 'JBoss in Action',
+    publishedDate: ISODate("2009-01-01T08:00:00.000Z")
+  },
+  {
+    title: 'Gnuplot in Action',
+    publishedDate: ISODate("2009-08-01T07:00:00.000Z")
+  },
+  {
+    title: 'NHibernate in Action',
+    publishedDate: ISODate("2009-02-01T08:00:00.000Z")
+  },
+  {
+    title: 'AspectJ in Action, Second Edition',
+    publishedDate: ISODate("2009-09-01T07:00:00.000Z")
+  },
+  {
+    title: "SharePoint 2007 Developer's Guide to Business Data Catalog",
+    publishedDate: ISODate("2009-09-09T07:00:00.000Z")
+  },
+  {
+    title: 'Algorithms of the Intelligent Web',
+    publishedDate: ISODate("2009-05-29T07:00:00.000Z")
+  },
+  {
+    title: 'Ruby in Practice',
+    publishedDate: ISODate("2009-03-01T08:00:00.000Z")
+  },
+  {
+    title: 'JavaFX in Action',
+    publishedDate: ISODate("2009-10-01T07:00:00.000Z")
+  },
+  {
+    title: 'SQL Server MVP Deep Dives',
+    publishedDate: ISODate("2009-11-01T07:00:00.000Z")
+  },
+  {
+    title: 'SQL Server MVP Deep Dives',
+    publishedDate: ISODate("2009-11-15T08:00:00.000Z")
+  },
+  {
+    title: 'SQL Server MVP Deep Dives',
+    publishedDate: ISODate("2009-11-01T07:00:00.000Z")
+  }
+]
+
+6. Find all books with pageCount is either 500 or 556 or 670
+iacsd> db.book.find({pageCount:{$in:[500,556,670]}},{_id:0,title:1,pageCount:1})
+[
+  { title: 'Android in Practice', pageCount: 500 },
+  { title: 'Spring Roo in Action', pageCount: 500 },
+  { title: 'Portlets and Apache Portals', pageCount: 500 },
+  { title: 'Erlang and OTP in Action', pageCount: 500 },
+  { title: 'Core OWL 5.0', pageCount: 500 },
+  { title: 'The Awesome Power of Java Beans', pageCount: 500 },
+  { title: 'PowerShell in Practice', pageCount: 500 }
+]
+7. Add 2 categories “kindle” and “hard bind” in all the books if its pageCount >200 and
+< 500 or number of pages >500
+iacsd> db.book.update({$or:[{pageCount:{$gt:200,$lt:500}},{pageCount:{$gt:500}}]},{$push:{categories:{$each:['kindle','hard bind']}}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 255,
+  modifiedCount: 255,
+  upsertedCount: 0
+}
+8. List all the books which has thumbnailUrl key
+iacsd> db.book.find({},{_id:0,thumbnailUrl:1})
+[
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/adzic.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ableson2.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ahmed.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ableson.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ahmed2.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/alag.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/allen.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/allmon.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/almiray.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/alves.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/armstrong3.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/armstrong.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/asher.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/baley.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/azher.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/banker.jpg'
+  },
+  {},
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/barlotta2.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/barlotta3.jpg'
+  },
+  {
+    thumbnailUrl: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/barrilleaux.jpg'
+  }
+]
+9. Add key type with values [“fiction”,”moral stories”,”adventurous”] in all books
+whose title starts with Fl and contains a some where in the name
+10. Add a key comments :[{comment:” like the book” ,date:ISODate(“2019-09-01”)},
+11. Add new author “myauthor” at position 2 for all books whose title starts with h or m
+and contains s at 2nd last position
+12. Increase pageCount by 100 for all books whose author at 1 st position is “Gal
+Shachor”
+13. Overwrite “Magnus Rydin" with name “Fr”
+14. List all books title, status, pageCount, comments for all books with pages > 300 or <
+500 or title starts with a or isbn starts with 193
+
+
+
+1. Display pageCount of books =( pageCount * 100 + (pagecount % 7)) of all books
+with isbn number starting with 193
+
+
+2. Display book code as first 3 charatcters of title followed by 4,5,6 character of isbn
+number
+3. Find sum, maximum, minimum of pageCount for all books
+iacsd> db.book.aggregate([{$group:{_id:null,total:{$sum:'$pageCount'},mimp:{$min:'$pageCount'},maxp:{$max:'$pageCount'}}}])
+[ { _id: null, total: 124671, mimp: 0, maxp: 1101 } ]
+
+4. Find sum, maximum, minimum,count of pageCount for all books categorywise and
+arrange it on count
+5. Display all books written by "Faisal Abid" display title, number of pages and author
+name. don’t display all author names
+6. Display book name, pages, isbn number and state as “old” if book is published before
+2010 otherwise display “in stock”
+7. Display 3 books with lowest number of pages published in 2010 or in 2011 or in
+2012 arrange it on title.
+8. List 3rd highest, 4th highest and 5th highest books according to number of pages
+arrange it on title. Display only title , isbn, pages
+9. Find sum of pageCount for all books categorywise if its title contains a or m and isbn
+contains number 7.
+
+
+
+

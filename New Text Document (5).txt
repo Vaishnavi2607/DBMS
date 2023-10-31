@@ -1,0 +1,1988 @@
+Create a Employee Collection add 5 documents:
+Example:
+{empno:111,ename:”Deepali
+Vaidya”,sal:40000.00,dept:{deptno12,dname:,”Hr”,dloc:”Mumbai},
+
+Desg:”Analyst”,mgr:{name:”Satish”,num:111},project:[{name:”Project-
+1”,Hrs:4},{name:”project- 2”,Hrs:4}]}
+
+sample> db.employee.insertOne({empno:111,ename:'Deepali vaidya',sal:40000,
+... dept:{deptno:12,dname:'Hr',dloc:'Mumbai'},desg:'Analyst',
+... mgr:{name:'satish',num:111},project:[{name:'project1',hrs:4},
+... ,{name:'project2',hrs:4}]});
+{
+  acknowledged: true,
+  insertedId: ObjectId("6540675f2067c6f361fdc06d")
+}
+sample> db.employee.insertMany([{empno:112,ename:'Nayana Patil',sal:30000,
+... dept:{deptno:11,dname:'Sales',dloc:'Pune'},desg:'Clerk',
+... mgr:{name:'arnavi',num:112},project:[{name:'project3',hrs:10},
+... ,{name:'project4',hrs:7}]},
+... {empno:113,ename:'Aishwarya',sal:60000,
+... dept:{deptno:13,dname:'Account',dloc:'Banglore'},desg:'Manager',
+... mgr:{name:'arnavi',num:113},project:[{name:'project5',hrs:5},
+... ,{name:'project6',hrs:6}]},
+... {empno:114,ename:'vaishnavi',sal:100000,
+... dept:{deptno:14,dname:'President',dloc:'Mumbai'},desg:'President',
+... mgr:{name:'satish',num:114},project:[{name:'project7',hrs:4},
+... ,{name:'project8',hrs:3}]},
+... {empno:115,ename:'Ritu',sal:70000,
+... dept:{deptno:15,dname:'Account',dloc:'Nagpur'},desg:'Analyst',
+... mgr:{name:'satish',num:112},project:[{name:'project8',hrs:4},
+... ,{name:'project3',hrs:4}]}]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("654068b82067c6f361fdc06e"),
+    '1': ObjectId("654068b82067c6f361fdc06f"),
+    '2': ObjectId("654068b82067c6f361fdc070"),
+    '3': ObjectId("654068b82067c6f361fdc071")
+  }
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 40000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Analyst',
+    mgr: { name: 'satish', num: 111 },
+    project: [
+      { name: 'project1', hrs: 4 },
+      null,
+      { name: 'project2', hrs: 4 }
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 30000,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Clerk',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 }
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 60000,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 100000,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'satish', num: 114 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 70000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'satish', num: 112 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ]
+  }
+]
+
+1. All Employee’s with the desg as ‘CLERK’ are now called as (AO) Administrative Officers.
+Update the Employee collection for this.
+sample> db.collection.update({desg: 'Clerk'},{$set:{desg:'Administrative Officers'}},{multi:true,upsert:true})
+{
+  acknowledged: true,
+  insertedId: ObjectId("65406cf96378c821ed7ea366"),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+sample> db.employee.update({desg: 'Clerk'},{$set:{desg:'Administrative Officers'}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 40000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Analyst',
+    mgr: { name: 'satish', num: 111 },
+    project: [
+      { name: 'project1', hrs: 4 },
+      null,
+      { name: 'project2', hrs: 4 }
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 30000,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 }
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 60000,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 100000,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'satish', num: 114 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 70000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'satish', num: 112 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ]
+  }
+]
+
+2. Change the number of hours for project-1 to 5 for all employees with designation analyst.
+sample> db.employee.update({desg:'Analyst','project.0.name':'project1'},{$set:{'project.0.hrs':5}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 40000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Analyst',
+    mgr: { name: 'satish', num: 111 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 4 }
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 30000,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 }
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 60000,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 100000,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'satish', num: 114 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 70000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'satish', num: 112 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ]
+  }
+]
+3. Add 2 projects project-3 and project-4 for employee whose name starts with ”Deep” with 2 hrs
+sample> db.employee.update({ename:/^[Dd]eep/},{$push:{project:[{name:'project3', hrs:3},{name:'project4' ,hrs:5}]}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 40000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Analyst',
+    mgr: { name: 'satish', num: 111 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 4 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ]
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 30000,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 }
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 60000,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 100000,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'satish', num: 114 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 70000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'satish', num: 112 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ]
+  }
+]
+4. Add bonus rs 2000 for all employees with salary > 50000
+sample> db.employee.update({sal:{$gt:50000}},{$inc:{sal:2000}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 3,
+  modifiedCount: 3,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 40000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Analyst',
+    mgr: { name: 'satish', num: 111 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 4 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ]
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 30000,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 }
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 62000,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 102000,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'satish', num: 114 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 72000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'satish', num: 112 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ]
+  }
+]
+5. Add bonus rs 1500 if salary <50000 and > 30000
+sample> db.employee.update({sal:{$gt:20000,$lt:50000}},{$inc:{sal:1500}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 2,
+  modifiedCount: 2,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 41500,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Analyst',
+    mgr: { name: 'satish', num: 111 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 4 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ]
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 31500,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 }
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 62000,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 102000,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'satish', num: 114 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 72000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'satish', num: 112 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ]
+  }
+]
+6. increment bounus by 1000 for all employees if salary <=30000
+sample> db.employee.update({sal:{$gte:30000}},{$inc:{sal:1000}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 42500,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Analyst',
+    mgr: { name: 'satish', num: 111 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 4 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ]
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 32500,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 }
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63000,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 103000,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'satish', num: 114 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 73000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'satish', num: 112 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ]
+  }
+]
+7. Change manager name to Tushar for all employees whose manager is currently “satish”
+And manager number to 3333
+sample> db.employee.update({'mgr.name':'satish'},{$set:{'mgr.name':'tushar','mgr.num':3333}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 3,
+  modifiedCount: 3,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 42500,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 4 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ]
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 32500,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 }
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63000,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 103000,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 73000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ]
+  }
+]
+8. Increase salary of all employees from “purchase department” by 15000
+sample> db.employee.update({'dept.dname':'Sales'},{$inc:{sal:15000}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 42500,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 4 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ]
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 47500,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 }
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63000,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 103000,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 73000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ]
+  }
+]
+9. Decrease number of hrs by 2 for all employees who are working on project-2
+sample> db.employee.update({'project.name':'project2'},{$inc:{'project.$.hrs':-1}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 10000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 3 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ]
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 10000,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 }
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63000,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 103000,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 73000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ]
+  }
+]
+
+10. Delete project-2 from all employee document if they are working on the project for 4
+hrs.
+11. Change the salary of employees to 10000 only if their salary is < 10000
+sample> db.employee.update({sal:{$lt:50000}},{$set:{sal:10000}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 2,
+  modifiedCount: 2,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 10000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 4 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ]
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 10000,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 }
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63000,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 103000,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 73000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ]
+  }
+]
+
+12. Increase bonus of all employees by 500 if the bonus is <2000 or their salary is <
+20000 or if employee belong to sales department
+sample> db.employee.update({$or:[{sal:{$gt:20000}},{'dept.dname':'Sales'}]},{$inc:{sal:500}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 10000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 3 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ]
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 10500,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 }
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63500,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 103500,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 73500,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ]
+  }
+]
+
+13. Add 2 new project at position 2 for all employees with designation analyst or salary is
+equal to either 30000 or 33000 or 35000
+sample> db.employee.update({sal:{$in:[10000,10500,12000]}},{$push:{project:[{name:'project 7', hrs:5},{name:'project6',hrs:8}]}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 2,
+  modifiedCount: 2,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 10000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 3 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ],
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 10500,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 },
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63500,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 103500,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 73500,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ]
+  }
+]
+14. Delete last project of all employees with department name is “HR” and if the location
+is Mumbai
+15. Change designation of all employees to senior programmer if they are working on
+name:”Project-1” for 4 hrs
+sample> db.employee.update({'project.name':'project1','project.hrs':5},{$set:{desg:'Senior Programmer'}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 10000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Senior Programmer',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 3 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ],
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 10500,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 },
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63500,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 103500,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 73500,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ]
+  }
+]
+
+16. Add list of hobbies in all employees document whose manager is Rajan or Revati
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 10000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Senior Programmer',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 3 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ],
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 10500,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 },
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63500,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 103500,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 73500,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ]
+  }
+]
+17. Add list of skillset in all employee documents who are working on project-4 for 3 hrs
+or on project-3 for 4 hrs
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 21000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Senior Programmer',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 3 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ],
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 20500,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 },
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63500,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 104500,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 83500,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ],
+    skillset: [ [ 'c++', 'python' ] ]
+  }
+]
+
+
+18. Add a new hobby as blogging at 3 position in hobbies array for all employess whose
+name starts with R or p and ends with j or s
+sample> db.employee.update({ename:/^De.*a$/},{$push:{'hobbies.2':'blogging'}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 21000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Senior Programmer',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 3 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ],
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'blogging' ]
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 20500,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 },
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63500,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 104500,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 83500,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ],
+    skillset: [ [ 'c++', 'python' ] ]
+  }
+]
+
+19. Increase salary by 10000 for all employees who are working on project-2 or project-3
+or project-1
+sample> db.employee.update({'project.name':{$in:['project1','project2','project3']}},{$inc:{sal:10000}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 3,
+  modifiedCount: 3,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 20000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Senior Programmer',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 3 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ],
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 20500,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 },
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63500,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 103500,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 83500,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ]
+  }
+]
+Decrease bonus by 1000 rs And increase salary by 1000rs for all employees whose
+department location is Mumbai
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 21000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Senior Programmer',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 3 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ],
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 20500,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 },
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63500,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 104500,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 83500,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ]
+  }
+]
+20. Remove all employees working on project-1
+21. Replace document of employee with name “Deepak to some new document
+22. Change skill python to python 3.8 for all employees if python is there in the skillset
+sample> db.employee.update({skillset:['python 3.8']},{$set:{skillset:['python']}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 21000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Senior Programmer',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 3 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ],
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'blogging' ]
+    ],
+    skillset: [ 'python' ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 20500,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 },
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ],
+    skillset: [ 'python' ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63500,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ],
+    skillset: [ 'python' ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 104500,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ],
+    skillset: [ 'python' ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 83500,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ],
+    skillset: [ 'python' ]
+  }
+]
+23. Add 2 skills MongoDb and Perl at the end of skillset array for all employees who are
+working at Pune location
+sample> db.employee.update({'dept.dloc':'Pune'},{$push:{skillset:['mongodb','Perl']}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 21000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Senior Programmer',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 3 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ],
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'blogging' ]
+    ],
+    skillset: [ 'python' ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 20500,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 },
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ]
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ],
+    skillset: [ 'python', [ 'mongodb', 'Perl' ], [ 'mongodb', 'Perl' ] ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63500,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 }
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ],
+    skillset: [ 'python' ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 104500,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ],
+    skillset: [ 'python' ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 83500,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ],
+    skillset: [ 'python' ]
+  }
+]
+
+24. Delete first hobby from hobby array for all employees who are working on project-1
+or project-2
+25. Delete last hobby from hobbies array for all employees who are working on project
+which is at 2 nd position in projects array for 4 hrs
+26. Add 2 new projects at the end of array for all employees whose skillset contains Perl
+or python
+sample> db.employee.update({skillset:{$in:['html','Python']}},{$push:{project:{$each:[{name:'project1', hrs:7},{name:'project7',hrs:9}]}}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0
+}
+sample> db.employee.find({},{_id:0})
+[
+  {
+    empno: 111,
+    ename: 'Deepali vaidya',
+    sal: 21000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Senior Programmer',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 5 },
+      null,
+      { name: 'project2', hrs: 3 },
+      [ { name: 'project3', hrs: 3 }, { name: 'project4', hrs: 5 } ],
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ],
+      { name: 'project1', hrs: 7 },
+      { name: 'project7', hrs: 9 }
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'blogging' ]
+    ],
+    skillset: [
+      'python',
+      'c',
+      'css',
+      'html',
+      'css',
+      { name: 'project1', hrs: 7 },
+      { name: 'project7', hrs: 9 }
+    ]
+  },
+  {
+    empno: 112,
+    ename: 'Nayana Patil',
+    sal: 20500,
+    dept: { deptno: 11, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Administrative Officers',
+    mgr: { name: 'arnavi', num: 112 },
+    project: [
+      { name: 'project3', hrs: 10 },
+      null,
+      { name: 'project4', hrs: 7 },
+      [ { name: 'project 7', hrs: 5 }, { name: 'project6', hrs: 8 } ],
+      { name: 'project1', hrs: 7 },
+      { name: 'project7', hrs: 9 }
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ],
+    skillset: [
+      'python',
+      [ 'mongodb', 'Perl' ],
+      [ 'mongodb', 'Perl' ],
+      'c',
+      'css',
+      'html',
+      'css',
+      { name: 'project1', hrs: 7 },
+      { name: 'project7', hrs: 9 }
+    ]
+  },
+  {
+    empno: 113,
+    ename: 'Aishwarya',
+    sal: 63500,
+    dept: { deptno: 13, dname: 'Account', dloc: 'Banglore' },
+    desg: 'Manager',
+    mgr: { name: 'arnavi', num: 113 },
+    project: [
+      { name: 'project5', hrs: 5 },
+      null,
+      { name: 'project6', hrs: 6 },
+      { name: 'project1', hrs: 7 },
+      { name: 'project7', hrs: 9 }
+    ],
+    hobbies: [
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading' ],
+      [ 'cooking', 'reading', 'writing' ],
+      [ 'cooking', 'reading' ]
+    ],
+    skillset: [
+      'python',
+      'c',
+      'css',
+      'html',
+      'css',
+      { name: 'project1', hrs: 7 },
+      { name: 'project7', hrs: 9 }
+    ]
+  },
+  {
+    empno: 114,
+    ename: 'vaishnavi',
+    sal: 104500,
+    dept: { deptno: 14, dname: 'President', dloc: 'Mumbai' },
+    desg: 'President',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project7', hrs: 4 },
+      null,
+      { name: 'project8', hrs: 3 },
+      { name: 'project1', hrs: 7 },
+      { name: 'project7', hrs: 9 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ],
+    skillset: [
+      'python',
+      'c',
+      'css',
+      'html',
+      'css',
+      { name: 'project1', hrs: 7 },
+      { name: 'project7', hrs: 9 }
+    ]
+  },
+  {
+    empno: 115,
+    ename: 'Ritu',
+    sal: 83500,
+    dept: { deptno: 15, dname: 'Account', dloc: 'Nagpur' },
+    desg: 'Analyst',
+    mgr: { name: 'tushar', num: 3333 },
+    project: [
+      { name: 'project8', hrs: 4 },
+      null,
+      { name: 'project3', hrs: 4 },
+      { name: 'project1', hrs: 7 },
+      { name: 'project7', hrs: 9 }
+    ],
+    hobbies: [ [ 'cooking', 'reading' ], [ 'cooking', 'reading', 'writing' ] ],
+    skillset: [
+      'python',
+      'c',
+      'css',
+      'html',
+      'css',
+      { name: 'project1', hrs: 7 },
+      { name: 'project7', hrs: 9 }
+    ]
+  }
+]
+
+27. Change hrs to 6 for project-1 for all employees if they working on the project-1 for <
+6 hrs. otherwise keep the existing value.
