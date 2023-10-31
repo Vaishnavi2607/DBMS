@@ -1,0 +1,842 @@
+Create a Employee Collection add 5 documents:
+Example:
+{empno:111,ename:”Deepali
+Vaidya”,sal:40000.00,dept:{deptno12,dname:,”Hr”,dloc:”Mumbai},
+
+Desg:”Analyst”,mgr:{name:”Satish”,num:111},project:[{name:”Project-
+1”,Hrs:4},{name:”project- 2”,Hrs:4}]}
+emp> db.emp.insertOne({empno:111, ename:'Deepali Vaidya',sal:40000.00, bonus:1000, dept:{deptno:12,dname:'Hr',dloc:'Mumbai'} ,desg:'Analyst', mgr:{name:'Satish',num:111}, project:[{name:'project1',hrs:4},{name:'project2',hrs:4}], skillset:['python','c','css'], hobbies:['traveling','reading']})
+{
+  acknowledged: true,
+  insertedId: ObjectId("65410a2739870701092ef209")
+}
+emp> db.emp.insertOne({empno:112, ename:'Sneha Mehera',sal:50000.00, bonus:1700, dept:{deptno:13,dname:'Sales',dloc:'Pune'} ,desg:'Programmer', mgr:{name:'Deepali',num:112}, project:[{name:'project3',hrs:5},{name:'project4',hrs:6}], skillset:['html','ruby','css'], hobbies:['writing','reading']})
+{
+  acknowledged: true,
+  insertedId: ObjectId("65410ba039870701092ef20a")
+}
+
+db.emp.insertMany([{empno:113, ename:'Raj Shrinivas',sal:75000.00, bonus:3000, dept:{deptno:14,dname:'Manager',dloc:'Banglore'} ,desg:'Sales', mgr:{name:'Satish',num:111}, project:[{name:'project1',hrs:3},{name:'project3',hrs:5}], skillset:['html','ruby','perl'], hobbies:['swimming','cooking']},
+{empno:114, ename:'Ajay Kumar',sal:80000.00, bonus:2500, dept:{deptno:14,dname:'Analyst',dloc:'Nagpur'} ,desg:'Accountant', mgr:{name:'Deepali',num:112}, project:[{name:'project4',hrs:2},{name:'project1',hrs:7}], skillset:['python','r','javascript'], hobbies:['reading','gardening']},
+{empno:112, ename:'Aishwarya Takale',sal:20000.00, bonus:1000, dept:{deptno:15,dname:'Account',dloc:'delhi'} ,desg:'Developer', mgr:{name:'Satish',num:111}, project:[{name:'project2',hrs:3},{name:'project5',hrs:3}], skillset:['Python','r','java'], hobbies:['traveling','listening']}])
+emp> db.emp.find()
+[
+  {
+    _id: ObjectId("65410a2739870701092ef209"),
+    empno: 111,
+    ename: 'Deepali Vaidya',
+    sal: 40000,
+    bonus: 1000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Analyst',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project1', hrs: 4 }, { name: 'project2', hrs: 4 } ],
+    skillset: [ 'python', 'c', 'css' ],
+    hobbies: [ 'traveling', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410ba039870701092ef20a"),
+    empno: 112,
+    ename: 'Sneha Mehera',
+    sal: 50000,
+    bonus: 1700,
+    dept: { deptno: 13, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Programmer',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project3', hrs: 5 }, { name: 'project4', hrs: 6 } ],
+    skillset: [ 'html', 'ruby', 'css' ],
+    hobbies: [ 'writing', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20b"),
+    empno: 113,
+    ename: 'Raj Shrinivas',
+    sal: 75000,
+    bonus: 3000,
+    dept: { deptno: 14, dname: 'Manager', dloc: 'Banglore' },
+    desg: 'Sales',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project1', hrs: 3 }, { name: 'project3', hrs: 5 } ],
+    skillset: [ 'html', 'ruby', 'perl' ],
+    hobbies: [ 'swimming', 'cooking' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20c"),
+    empno: 114,
+    ename: 'Ajay Kumar',
+    sal: 80000,
+    bonus: 2500,
+    dept: { deptno: 14, dname: 'Analyst', dloc: 'Nagpur' },
+    desg: 'Accountant',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project4', hrs: 2 }, { name: 'project1', hrs: 7 } ],
+    skillset: [ 'python', 'r', 'javascript' ],
+    hobbies: [ 'reading', 'gardening' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20d"),
+    empno: 112,
+    ename: 'Aishwarya Takale',
+    sal: 20000,
+    bonus: 1000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'delhi' },
+    desg: 'Developer',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project2', hrs: 3 }, { name: 'project5', hrs: 3 } ],
+    skillset: [ 'Python', 'r', 'java' ],
+    hobbies: [ 'traveling', 'listening' ]
+  }
+]
+1. All Employee’s with the desg as ‘CLERK’ are now called as (AO) Administrative Officers.
+Update the Employee collection for this.
+emp> db.emp.update({desg:'Analyst'},{$set:{desg:'Administrative Officer'}},{multi:true})
+DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+emp> db.emp.find()
+[
+  {
+    _id: ObjectId("65410a2739870701092ef209"),
+    empno: 111,
+    ename: 'Deepali Vaidya',
+    sal: 40000,
+    bonus: 1000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Administrative Officer',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project1', hrs: 4 }, { name: 'project2', hrs: 4 } ],
+    skillset: [ 'python', 'c', 'css' ],
+    hobbies: [ 'traveling', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410ba039870701092ef20a"),
+    empno: 112,
+    ename: 'Sneha Mehera',
+    sal: 50000,
+    bonus: 1700,
+    dept: { deptno: 13, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Programmer',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project3', hrs: 5 }, { name: 'project4', hrs: 6 } ],
+    skillset: [ 'html', 'ruby', 'css' ],
+    hobbies: [ 'writing', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20b"),
+    empno: 113,
+    ename: 'Raj Shrinivas',
+    sal: 75000,
+    bonus: 3000,
+    dept: { deptno: 14, dname: 'Manager', dloc: 'Banglore' },
+    desg: 'Sales',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project1', hrs: 3 }, { name: 'project3', hrs: 5 } ],
+    skillset: [ 'html', 'ruby', 'perl' ],
+    hobbies: [ 'swimming', 'cooking' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20c"),
+    empno: 114,
+    ename: 'Ajay Kumar',
+    sal: 80000,
+    bonus: 2500,
+    dept: { deptno: 14, dname: 'Analyst', dloc: 'Nagpur' },
+    desg: 'Accountant',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project4', hrs: 2 }, { name: 'project1', hrs: 7 } ],
+    skillset: [ 'python', 'r', 'javascript' ],
+    hobbies: [ 'reading', 'gardening' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20d"),
+    empno: 112,
+    ename: 'Aishwarya Takale',
+    sal: 20000,
+    bonus: 1000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'delhi' },
+    desg: 'Developer',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project2', hrs: 3 }, { name: 'project5', hrs: 3 } ],
+    skillset: [ 'Python', 'r', 'java' ],
+    hobbies: [ 'traveling', 'listening' ]
+  }
+]
+
+2. Change the number of hours for project-1 to 5 for all employees with designation analyst.
+emp> db.emp.update({desg:'Accountant','project.name':'project1'},{$set:{'project.$.hrs':5}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+emp> db.emp.find()
+[
+  {
+    _id: ObjectId("65410a2739870701092ef209"),
+    empno: 111,
+    ename: 'Deepali Vaidya',
+    sal: 40000,
+    bonus: 1000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Administrative Officer',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project1', hrs: 4 }, { name: 'project2', hrs: 4 } ],
+    skillset: [ 'python', 'c', 'css' ],
+    hobbies: [ 'traveling', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410ba039870701092ef20a"),
+    empno: 112,
+    ename: 'Sneha Mehera',
+    sal: 50000,
+    bonus: 1700,
+    dept: { deptno: 13, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Programmer',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project3', hrs: 5 }, { name: 'project4', hrs: 6 } ],
+    skillset: [ 'html', 'ruby', 'css' ],
+    hobbies: [ 'writing', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20b"),
+    empno: 113,
+    ename: 'Raj Shrinivas',
+    sal: 75000,
+    bonus: 3000,
+    dept: { deptno: 14, dname: 'Manager', dloc: 'Banglore' },
+    desg: 'Sales',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project1', hrs: 3 }, { name: 'project3', hrs: 5 } ],
+    skillset: [ 'html', 'ruby', 'perl' ],
+    hobbies: [ 'swimming', 'cooking' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20c"),
+    empno: 114,
+    ename: 'Ajay Kumar',
+    sal: 80000,
+    bonus: 2500,
+    dept: { deptno: 14, dname: 'Analyst', dloc: 'Nagpur' },
+    desg: 'Accountant',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project4', hrs: 2 }, { name: 'project1', hrs: 5 } ],
+    skillset: [ 'python', 'r', 'javascript' ],
+    hobbies: [ 'reading', 'gardening' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20d"),
+    empno: 112,
+    ename: 'Aishwarya Takale',
+    sal: 20000,
+    bonus: 1000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'delhi' },
+    desg: 'Developer',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project2', hrs: 3 }, { name: 'project5', hrs: 3 } ],
+    skillset: [ 'Python', 'r', 'java' ],
+    hobbies: [ 'traveling', 'listening' ]
+  }
+]
+3. Add 2 projects project-3 and project-4 for employee whose name starts with ”Deep” with 2 hrs
+emp> db.emp.find()
+[
+  {
+    _id: ObjectId("65410a2739870701092ef209"),
+    empno: 111,
+    ename: 'Deepali Vaidya',
+    sal: 40000,
+    bonus: 1000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Administrative Officer',
+    mgr: { name: 'Satish', num: 111 },
+    project: [
+      { name: 'project1', hrs: 4 },
+      { name: 'project2', hrs: 4 },
+      { name: 'project3', hrs: 2 },
+      { name: 'project4', hrs: 2 }
+    ],
+    skillset: [ 'python', 'c', 'css' ],
+    hobbies: [ 'traveling', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410ba039870701092ef20a"),
+    empno: 112,
+    ename: 'Sneha Mehera',
+    sal: 50000,
+    bonus: 1700,
+    dept: { deptno: 13, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Programmer',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project3', hrs: 5 }, { name: 'project4', hrs: 6 } ],
+    skillset: [ 'html', 'ruby', 'css' ],
+    hobbies: [ 'writing', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20b"),
+    empno: 113,
+    ename: 'Raj Shrinivas',
+    sal: 75000,
+    bonus: 3000,
+    dept: { deptno: 14, dname: 'Manager', dloc: 'Banglore' },
+    desg: 'Sales',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project1', hrs: 3 }, { name: 'project3', hrs: 5 } ],
+    skillset: [ 'html', 'ruby', 'perl' ],
+    hobbies: [ 'swimming', 'cooking' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20c"),
+    empno: 114,
+    ename: 'Ajay Kumar',
+    sal: 80000,
+    bonus: 2500,
+    dept: { deptno: 14, dname: 'Analyst', dloc: 'Nagpur' },
+    desg: 'Accountant',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project4', hrs: 2 }, { name: 'project1', hrs: 5 } ],
+    skillset: [ 'python', 'r', 'javascript' ],
+    hobbies: [ 'reading', 'gardening' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20d"),
+    empno: 112,
+    ename: 'Aishwarya Takale',
+    sal: 20000,
+    bonus: 1000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'delhi' },
+    desg: 'Developer',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project2', hrs: 3 }, { name: 'project5', hrs: 3 } ],
+    skillset: [ 'Python', 'r', 'java' ],
+    hobbies: [ 'traveling', 'listening' ]
+  }
+]
+
+4. Add bonus rs 2000 for all employees with salary > 50000
+emp> db.emp.update({sal:{$gt:30000}},{$inc:{bonus:2000}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+emp> db.emp.find()
+[
+  {
+    _id: ObjectId("65410a2739870701092ef209"),
+    empno: 111,
+    ename: 'Deepali Vaidya',
+    sal: 40000,
+    bonus: 3000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Administrative Officer',
+    mgr: { name: 'Satish', num: 111 },
+    project: [
+      { name: 'project1', hrs: 4 },
+      { name: 'project2', hrs: 4 },
+      { name: 'project3', hrs: 2 },
+      { name: 'project4', hrs: 2 }
+    ],
+    skillset: [ 'python', 'c', 'css' ],
+    hobbies: [ 'traveling', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410ba039870701092ef20a"),
+    empno: 112,
+    ename: 'Sneha Mehera',
+    sal: 50000,
+    bonus: 3700,
+    dept: { deptno: 13, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Programmer',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project3', hrs: 5 }, { name: 'project4', hrs: 6 } ],
+    skillset: [ 'html', 'ruby', 'css' ],
+    hobbies: [ 'writing', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20b"),
+    empno: 113,
+    ename: 'Raj Shrinivas',
+    sal: 75000,
+    bonus: 5000,
+    dept: { deptno: 14, dname: 'Manager', dloc: 'Banglore' },
+    desg: 'Sales',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project1', hrs: 3 }, { name: 'project3', hrs: 5 } ],
+    skillset: [ 'html', 'ruby', 'perl' ],
+    hobbies: [ 'swimming', 'cooking' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20c"),
+    empno: 114,
+    ename: 'Ajay Kumar',
+    sal: 80000,
+    bonus: 4500,
+    dept: { deptno: 14, dname: 'Analyst', dloc: 'Nagpur' },
+    desg: 'Accountant',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project4', hrs: 2 }, { name: 'project1', hrs: 5 } ],
+    skillset: [ 'python', 'r', 'javascript' ],
+    hobbies: [ 'reading', 'gardening' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20d"),
+    empno: 112,
+    ename: 'Aishwarya Takale',
+    sal: 20000,
+    bonus: 1000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'delhi' },
+    desg: 'Developer',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project2', hrs: 3 }, { name: 'project5', hrs: 3 } ],
+    skillset: [ 'Python', 'r', 'java' ],
+    hobbies: [ 'traveling', 'listening' ]
+  }
+]
+
+5. Add bonus rs 1500 if salary <50000 and > 30000
+emp> db.emp.find()
+[
+  {
+    _id: ObjectId("65410a2739870701092ef209"),
+    empno: 111,
+    ename: 'Deepali Vaidya',
+    sal: 40000,
+    bonus: 4000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Administrative Officer',
+    mgr: { name: 'Satish', num: 111 },
+    project: [
+      { name: 'project1', hrs: 4 },
+      { name: 'project2', hrs: 4 },
+      { name: 'project3', hrs: 2 },
+      { name: 'project4', hrs: 2 }
+    ],
+    skillset: [ 'python', 'c', 'css' ],
+    hobbies: [ 'traveling', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410ba039870701092ef20a"),
+    empno: 112,
+    ename: 'Sneha Mehera',
+    sal: 50000,
+    bonus: 3700,
+    dept: { deptno: 13, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Programmer',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project3', hrs: 5 }, { name: 'project4', hrs: 6 } ],
+    skillset: [ 'html', 'ruby', 'css' ],
+    hobbies: [ 'writing', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20b"),
+    empno: 113,
+    ename: 'Raj Shrinivas',
+    sal: 75000,
+    bonus: 5000,
+    dept: { deptno: 14, dname: 'Manager', dloc: 'Banglore' },
+    desg: 'Sales',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project1', hrs: 3 }, { name: 'project3', hrs: 5 } ],
+    skillset: [ 'html', 'ruby', 'perl' ],
+    hobbies: [ 'swimming', 'cooking' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20c"),
+    empno: 114,
+    ename: 'Ajay Kumar',
+    sal: 80000,
+    bonus: 4500,
+    dept: { deptno: 14, dname: 'Analyst', dloc: 'Nagpur' },
+    desg: 'Accountant',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project4', hrs: 2 }, { name: 'project1', hrs: 5 } ],
+    skillset: [ 'python', 'r', 'javascript' ],
+    hobbies: [ 'reading', 'gardening' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20d"),
+    empno: 112,
+    ename: 'Aishwarya Takale',
+    sal: 20000,
+    bonus: 1000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'delhi' },
+    desg: 'Developer',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project2', hrs: 3 }, { name: 'project5', hrs: 3 } ],
+    skillset: [ 'Python', 'r', 'java' ],
+    hobbies: [ 'traveling', 'listening' ]
+  }
+]
+6. increment bounus by 1000 for all employees if salary <=30000
+emp> db.emp.update({sal:{$gte:30000}},{$inc:{bonus:1000}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+emp> db.emp.find()
+[
+  {
+    _id: ObjectId("65410a2739870701092ef209"),
+    empno: 111,
+    ename: 'Deepali Vaidya',
+    sal: 40000,
+    bonus: 5000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Administrative Officer',
+    mgr: { name: 'Satish', num: 111 },
+    project: [
+      { name: 'project1', hrs: 4 },
+      { name: 'project2', hrs: 4 },
+      { name: 'project3', hrs: 2 },
+      { name: 'project4', hrs: 2 }
+    ],
+    skillset: [ 'python', 'c', 'css' ],
+    hobbies: [ 'traveling', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410ba039870701092ef20a"),
+    empno: 112,
+    ename: 'Sneha Mehera',
+    sal: 50000,
+    bonus: 4700,
+    dept: { deptno: 13, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Programmer',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project3', hrs: 5 }, { name: 'project4', hrs: 6 } ],
+    skillset: [ 'html', 'ruby', 'css' ],
+    hobbies: [ 'writing', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20b"),
+    empno: 113,
+    ename: 'Raj Shrinivas',
+    sal: 75000,
+    bonus: 6000,
+    dept: { deptno: 14, dname: 'Manager', dloc: 'Banglore' },
+    desg: 'Sales',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project1', hrs: 3 }, { name: 'project3', hrs: 5 } ],
+    skillset: [ 'html', 'ruby', 'perl' ],
+    hobbies: [ 'swimming', 'cooking' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20c"),
+    empno: 114,
+    ename: 'Ajay Kumar',
+    sal: 80000,
+    bonus: 5500,
+    dept: { deptno: 14, dname: 'Analyst', dloc: 'Nagpur' },
+    desg: 'Accountant',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project4', hrs: 2 }, { name: 'project1', hrs: 5 } ],
+    skillset: [ 'python', 'r', 'javascript' ],
+    hobbies: [ 'reading', 'gardening' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20d"),
+    empno: 112,
+    ename: 'Aishwarya Takale',
+    sal: 20000,
+    bonus: 1000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'delhi' },
+    desg: 'Developer',
+    mgr: { name: 'Satish', num: 111 },
+    project: [ { name: 'project2', hrs: 3 }, { name: 'project5', hrs: 3 } ],
+    skillset: [ 'Python', 'r', 'java' ],
+    hobbies: [ 'traveling', 'listening' ]
+  }
+]
+7. Change manager name to Tushar for all employees whose manager is currently “satish”
+And manager number to 3333
+emp> db.emp.update({'mgr.name':'Satish'},{$set:{'mgr.name':'Tushar','mgr.num':3333}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 3,
+  modifiedCount: 3,
+  upsertedCount: 0
+}
+emp> db.emp.find()
+[
+  {
+    _id: ObjectId("65410a2739870701092ef209"),
+    empno: 111,
+    ename: 'Deepali Vaidya',
+    sal: 40000,
+    bonus: 5000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Administrative Officer',
+    mgr: { name: 'Tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 4 },
+      { name: 'project2', hrs: 4 },
+      { name: 'project3', hrs: 2 },
+      { name: 'project4', hrs: 2 }
+    ],
+    skillset: [ 'python', 'c', 'css' ],
+    hobbies: [ 'traveling', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410ba039870701092ef20a"),
+    empno: 112,
+    ename: 'Sneha Mehera',
+    sal: 50000,
+    bonus: 4700,
+    dept: { deptno: 13, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Programmer',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project3', hrs: 5 }, { name: 'project4', hrs: 6 } ],
+    skillset: [ 'html', 'ruby', 'css' ],
+    hobbies: [ 'writing', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20b"),
+    empno: 113,
+    ename: 'Raj Shrinivas',
+    sal: 75000,
+    bonus: 6000,
+    dept: { deptno: 14, dname: 'Manager', dloc: 'Banglore' },
+    desg: 'Sales',
+    mgr: { name: 'Tushar', num: 3333 },
+    project: [ { name: 'project1', hrs: 3 }, { name: 'project3', hrs: 5 } ],
+    skillset: [ 'html', 'ruby', 'perl' ],
+    hobbies: [ 'swimming', 'cooking' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20c"),
+    empno: 114,
+    ename: 'Ajay Kumar',
+    sal: 80000,
+    bonus: 5500,
+    dept: { deptno: 14, dname: 'Analyst', dloc: 'Nagpur' },
+    desg: 'Accountant',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project4', hrs: 2 }, { name: 'project1', hrs: 5 } ],
+    skillset: [ 'python', 'r', 'javascript' ],
+    hobbies: [ 'reading', 'gardening' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20d"),
+    empno: 112,
+    ename: 'Aishwarya Takale',
+    sal: 20000,
+    bonus: 1000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'delhi' },
+    desg: 'Developer',
+    mgr: { name: 'Tushar', num: 3333 },
+    project: [ { name: 'project2', hrs: 3 }, { name: 'project5', hrs: 3 } ],
+    skillset: [ 'Python', 'r', 'java' ],
+    hobbies: [ 'traveling', 'listening' ]
+  }
+]
+8. Increase salary of all employees from “purchase department” by 15000
+emp> db.emp.update({'dept.dname':'Sales'},{$inc:{sal:15000}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+emp> db.emp.find()
+[
+  {
+    _id: ObjectId("65410a2739870701092ef209"),
+    empno: 111,
+    ename: 'Deepali Vaidya',
+    sal: 40000,
+    bonus: 5000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Administrative Officer',
+    mgr: { name: 'Tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 4 },
+      { name: 'project2', hrs: 4 },
+      { name: 'project3', hrs: 2 },
+      { name: 'project4', hrs: 2 }
+    ],
+    skillset: [ 'python', 'c', 'css' ],
+    hobbies: [ 'traveling', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410ba039870701092ef20a"),
+    empno: 112,
+    ename: 'Sneha Mehera',
+    sal: 65000,
+    bonus: 4700,
+    dept: { deptno: 13, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Programmer',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project3', hrs: 5 }, { name: 'project4', hrs: 6 } ],
+    skillset: [ 'html', 'ruby', 'css' ],
+    hobbies: [ 'writing', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20b"),
+    empno: 113,
+    ename: 'Raj Shrinivas',
+    sal: 75000,
+    bonus: 6000,
+    dept: { deptno: 14, dname: 'Manager', dloc: 'Banglore' },
+    desg: 'Sales',
+    mgr: { name: 'Tushar', num: 3333 },
+    project: [ { name: 'project1', hrs: 3 }, { name: 'project3', hrs: 5 } ],
+    skillset: [ 'html', 'ruby', 'perl' ],
+    hobbies: [ 'swimming', 'cooking' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20c"),
+    empno: 114,
+    ename: 'Ajay Kumar',
+    sal: 80000,
+    bonus: 5500,
+    dept: { deptno: 14, dname: 'Analyst', dloc: 'Nagpur' },
+    desg: 'Accountant',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project4', hrs: 2 }, { name: 'project1', hrs: 5 } ],
+    skillset: [ 'python', 'r', 'javascript' ],
+    hobbies: [ 'reading', 'gardening' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20d"),
+    empno: 112,
+    ename: 'Aishwarya Takale',
+    sal: 20000,
+    bonus: 1000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'delhi' },
+    desg: 'Developer',
+    mgr: { name: 'Tushar', num: 3333 },
+    project: [ { name: 'project2', hrs: 3 }, { name: 'project5', hrs: 3 } ],
+    skillset: [ 'Python', 'r', 'java' ],
+    hobbies: [ 'traveling', 'listening' ]
+  }
+]
+
+9. Decrease number of hrs by 2 for all employees who are working on project-2
+emp> db.emp.update({'project.name':'project2'},{$inc:{'project.$.hrs':-2}},{multi:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 2,
+  modifiedCount: 2,
+  upsertedCount: 0
+}
+emp> db.emp.find()
+[
+  {
+    _id: ObjectId("65410a2739870701092ef209"),
+    empno: 111,
+    ename: 'Deepali Vaidya',
+    sal: 40000,
+    bonus: 5000,
+    dept: { deptno: 12, dname: 'Hr', dloc: 'Mumbai' },
+    desg: 'Administrative Officer',
+    mgr: { name: 'Tushar', num: 3333 },
+    project: [
+      { name: 'project1', hrs: 4 },
+      { name: 'project2', hrs: 2 },
+      { name: 'project3', hrs: 2 },
+      { name: 'project4', hrs: 2 }
+    ],
+    skillset: [ 'python', 'c', 'css' ],
+    hobbies: [ 'traveling', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410ba039870701092ef20a"),
+    empno: 112,
+    ename: 'Sneha Mehera',
+    sal: 65000,
+    bonus: 4700,
+    dept: { deptno: 13, dname: 'Sales', dloc: 'Pune' },
+    desg: 'Programmer',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project3', hrs: 5 }, { name: 'project4', hrs: 6 } ],
+    skillset: [ 'html', 'ruby', 'css' ],
+    hobbies: [ 'writing', 'reading' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20b"),
+    empno: 113,
+    ename: 'Raj Shrinivas',
+    sal: 75000,
+    bonus: 6000,
+    dept: { deptno: 14, dname: 'Manager', dloc: 'Banglore' },
+    desg: 'Sales',
+    mgr: { name: 'Tushar', num: 3333 },
+    project: [ { name: 'project1', hrs: 3 }, { name: 'project3', hrs: 5 } ],
+    skillset: [ 'html', 'ruby', 'perl' ],
+    hobbies: [ 'swimming', 'cooking' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20c"),
+    empno: 114,
+    ename: 'Ajay Kumar',
+    sal: 80000,
+    bonus: 5500,
+    dept: { deptno: 14, dname: 'Analyst', dloc: 'Nagpur' },
+    desg: 'Accountant',
+    mgr: { name: 'Deepali', num: 112 },
+    project: [ { name: 'project4', hrs: 2 }, { name: 'project1', hrs: 5 } ],
+    skillset: [ 'python', 'r', 'javascript' ],
+    hobbies: [ 'reading', 'gardening' ]
+  },
+  {
+    _id: ObjectId("65410f2e39870701092ef20d"),
+    empno: 112,
+    ename: 'Aishwarya Takale',
+    sal: 20000,
+    bonus: 1000,
+    dept: { deptno: 15, dname: 'Account', dloc: 'delhi' },
+    desg: 'Developer',
+    mgr: { name: 'Tushar', num: 3333 },
+    project: [ { name: 'project2', hrs: 1 }, { name: 'project5', hrs: 3 } ],
+    skillset: [ 'Python', 'r', 'java' ],
+    hobbies: [ 'traveling', 'listening' ]
+  }
+]
+
+10. Delete project-2 from all employee document if they are working on the project for 4
+hrs.
+11. Change the salary of employees to 10000 only if their salary is < 10000
+12. Increase bonus of all employees by 500 if the bonus is <2000 or their salary is <
+20000 or if employee belong to sales department
+13. Add 2 new project at position 2 for all employees with designation analyst or salary is
+equal to either 30000 or 33000 or 35000
+14. Delete last project of all employees with department name is “HR” and if the location
+is Mumbai
+15. Change designation of all employees to senior programmer if they are working on
+name:”Project-1” for 4 hrs
+16. Add list of hobbies in all employees document whose manager is Rajan or Revati
+17. Add list of skillset in all employee documents who are working on project-4 for 3 hrs
+or on project-3 for 4 hrs
+18. Add a new hobby as blogging at 3 position in hobbies array for all employess whose
+name starts with R or p and ends with j or s
+19. Increase salary by 10000 for all employees who are working on project-2 or project-3
+or project-1
+Decrease bonus by 1000 rs And increase salary by 1000rs for all employees whose
+department location is Mumbai
+20. Remove all employees working on project-1
+21. Replace document of employee with name “Deepak to some new document
+22. Change skill python to python 3.8 for all employees if python is there in the skillset
+23. Add 2 skills MongoDb and Perl at the end of skillset array for all employees who are
+working at Pune location
+24. Delete first hobby from hobby array for all employees who are working on project-1
+or project-2
+25. Delete last hobby from hobbies array for all employees who are working on project
+which is at 2 nd position in projects array for 4 hrs
+26. Add 2 new projects at the end of array for all employees whose skillset contains Perl
+or python
+27. Change hrs to 6 for project-1 for all employees if they working on the project-1 for <
+6 hrs. otherwise keep the existing value.
