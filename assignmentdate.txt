@@ -39,6 +39,35 @@ SQL> select  empno,ename,hiredate,next_day(hiredate, 'monday') from emp;
 
 14 rows selected.
 
+
+SQL> select distinct(next_day(hiredate,'monday')),hiredate from emp;
+
+(NEXT_DAY HIREDATE
+--------- ---------
+17-JAN-83 12-JAN-83
+15-JUN-81 09-JUN-81
+22-DEC-80 17-DEC-80
+23-FEB-81 22-FEB-81
+14-SEP-81 08-SEP-81
+07-DEC-81 03-DEC-81
+28-AUG-00 26-AUG-00
+23-FEB-81 20-FEB-81
+04-MAY-81 01-MAY-81
+06-APR-81 02-APR-81
+13-DEC-82 09-DEC-82
+25-JAN-82 23-JAN-82
+05-OCT-81 28-SEP-81
+23-NOV-81 17-NOV-81
+
+14 rows selected.
+
+
+SQL> select * from emp where trim(to_char(hiredate,'day'))='monday';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+
 4. Write a query to get the first day of the current year.
 SQL> select trunc(sysdate,'yyyy') from dual;
 
