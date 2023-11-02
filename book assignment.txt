@@ -284,8 +284,48 @@ iacsd0923> db.book.find({$or:[{pageCount:{$gt:300,$lt:500}},{title:/^a/},{isbn:/
 
 1. Display pageCount of books =( pageCount * 100 + (pagecount % 7)) of all books
 with isbn number starting with 193
+mydb> db.book.aggregate([{$match:{isbn:/^193/}},{$project:{_id:1,isbn:1,pageCount:1,addp:{$add:[{$multiply:['$pageCount',100]},{$mod:['$pageCount',7]}]}}}])
+[
+  { _id: 4, isbn: '1933988746', pageCount: 576, addp: 57602 },
+  { _id: 2, isbn: '1935182722', pageCount: 592, addp: 59204 },
+  { _id: 1, isbn: '1933988673', pageCount: 416, addp: 41603 },
+  { _id: 5, isbn: '1935182420', pageCount: 600, addp: 60005 },
+  { _id: 6, isbn: '1933988312', pageCount: 425, addp: 42505 },
+  { _id: 7, isbn: '1933988320', pageCount: 432, addp: 43205 },
+  { _id: 8, isbn: '1933988797', pageCount: 265, addp: 26506 },
+  { _id: 9, isbn: '1935182234', pageCount: 375, addp: 37504 },
+  { _id: 10, isbn: '193518217X', pageCount: 325, addp: 32503 },
+  { _id: 11, isbn: '1933988509', pageCount: 592, addp: 59204 },
+  { _id: 13, isbn: '1933988762', pageCount: 258, addp: 25806 },
+  { _id: 16, isbn: '1933988711', pageCount: 550, addp: 55004 },
+  { _id: 15, isbn: '1933988592', pageCount: 344, addp: 34401 },
+  { _id: 17, isbn: '1935182870', pageCount: 0, addp: 0 },
+  { _id: 22, isbn: '193239415X', pageCount: 400, addp: 40001 },
+  { _id: 25, isbn: '1930110529', pageCount: 480, addp: 48004 },
+  { _id: 24, isbn: '1932394885', pageCount: 880, addp: 88005 },
+  { _id: 26, isbn: '1932394826', pageCount: 384, addp: 38406 },
+  { _id: 28, isbn: '1933988649', pageCount: 488, addp: 48805 },
+  { _id: 29, isbn: '1933988355', pageCount: 376, addp: 37605 }
+]
+Type "it" for more
+
 2. Display book code as first 3 charatcters of title followed by 4,5,6 character of isbn
 number
+mydb> db.book.aggregate([{$project:{bookcode:{$concat:[{$substr:['$title',1,3]},{$substr:['$isbn',4,3]}]}}},{$group:{_id:'$bookcode'}}])
+[
+  { _id: 'WT 988' }, { _id: 'xte110' },
+  { _id: 'nt 394' }, { _id: '++/394' },
+  { _id: 'tru394' }, { _id: 'ell290' },
+  { _id: 'ett292' }, { _id: '# i182' },
+  { _id: 'DK 110' }, { _id: 'bje777' },
+  { _id: 'SLs988' }, { _id: 'mpl777' },
+  { _id: 'QR 777' }, { _id: 'xpr292' },
+  { _id: 'nte777' }, { _id: 'ini394' },
+  { _id: 'SP 110' }, { _id: 'DAP110' },
+  { _id: 'ngu291' }, { _id: '0 A290' }
+]
+Type "it" for more
+
 3. Find sum, maximum, minimum of pageCount for all books
 4. Find sum, maximum, minimum,count of pageCount for all books categorywise and
 arrange it on count
